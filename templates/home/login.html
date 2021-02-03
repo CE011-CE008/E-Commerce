@@ -1,0 +1,24 @@
+{% extends 'home/base.html' %}
+{% block content %}
+{% if form.errors %}
+<p class="error"> Invalid Username or Password </p>
+{% endif %}
+<body style="background-color:lightgrey;">
+<form action="http://127.0.0.1:8000/home/auth" method = "post">{% csrf_token %}
+<table border="2" align="center">
+<tr>
+<td>
+<label for="username"><strong><em>User name:</em></strong> </label></td>
+<td>
+<input type="text" name = "username" value = "" id="username"></td></tr>
+<tr>
+<td>
+<label for="password"><strong> <em>Password :</em></strong></label></td>
+<td><input type="password" name="password" value="" id="password"></td>
+<tr>
+<td>
+<input type="submit" value="login"/></td>
+<td>
+<a href="http://127.0.0.1:8000/home/registration"><em>New User</em></td></tr>
+</body>
+{% endblock %}
