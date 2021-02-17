@@ -13,19 +13,18 @@ table{
    margin-top: 20px
 }
 h2{
-  margin-top: 240px;
+  margin-top: 240px
   color: red
 }
 </style>
 <h2 align="center">Register Your Self</h2>
 <table align="center">
-<form action="/Home/base/" method="POST">
+<form method="POST">
+{% csrf_token %}
 <tr>
 <th>Name: </th><th><input type="text" name="name" ></th>
 </tr>
-<tr>
-<th>Username: </th><th><input type="text" name="username"></th>
-</tr>
+
 <tr>
 <th>Password:</th><th><input type="password" name="password"></th>
 </tr>
@@ -34,6 +33,9 @@ h2{
 </tr>
 <tr>
 <th>Address:</th><th><textarea name="address"></textarea></th>
+</tr>
+<tr>
+<th>Phone: </th><th><input type="text" name="phn" id="phn"></th>
 </tr>
 <tr>
 <th>Date Of Birth: </th><th><input type="date" name="dob" id="dob"></th>
