@@ -1,33 +1,30 @@
 <!DOCKTYPE html>
 <html>
-<head>
-<meta charset="utf­8">
-<h1 align="center"><em>Registration page</em></h1>
-</head>
-<marquee color="red" height="5%"  ><font color="red">Enter all correct data.....</font></marquee>
-<body style="background-color:lightgrey;">
-
+<head><title>Registration</title></head>
+<body>
 <style>
-table{
-    border: "2" 
+table,th,tr{
+    border: 1px solid
 }
 th{
   width:50%
 }
 table{
-   margin-top: 5%
+   margin-top: 20px
 }
-
+h2{
+  margin-top: 240px
+  color: red
+}
 </style>
-<form action="base.html" method="POST">
-<table  align="center" border="2">
-
+<h2 align="center">Register Your Self</h2>
+<table align="center">
+<form method="POST">
+{% csrf_token %}
 <tr>
 <th>Name: </th><th><input type="text" name="name" ></th>
 </tr>
-<tr>
-<th>Username: </th><th><input type="text" name="username"></th>
-</tr>
+
 <tr>
 <th>Password:</th><th><input type="password" name="password"></th>
 </tr>
@@ -38,9 +35,13 @@ table{
 <th>Address:</th><th><textarea name="address"></textarea></th>
 </tr>
 <tr>
-<th>Date Of Birth: </th><th><input type="date" name="dob"></th>
+<th>Phone: </th><th><input type="text" name="phn" id="phn"></th>
 </tr>
+<tr>
+<th>Date Of Birth: </th><th><input type="date" name="dob" id="dob"></th>
+</tr>
+<tr><th><input type="submit"></th><th><input type="reset"></th></tr>
 </table>
-</body>
 </form>
-</html
+</body>
+</html>
