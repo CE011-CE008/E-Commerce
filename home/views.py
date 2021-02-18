@@ -16,7 +16,7 @@ from . import views
 def login(request):
     return render(request,'home/login.html')
 def index(request):
-   return render(request,"home/base.html")
+   return render(request,"home/login.html")
 def auth_view(request):
     name=request.POST.get('username')
     password=request.POST.get('password')
@@ -26,6 +26,9 @@ def auth_view(request):
     else:
         return render(request,'home/invalidlogin.html')
 def registration(request):
+    #messages.success(request,'Sorry some error occurred')
+    return render(request,'home/registration.html')
+def register(request):
     if(request.POST.get('name') and request.POST.get('password')):
         saverecord = Registration()
         saverecord.name = request.POST.get('name')
@@ -34,15 +37,14 @@ def registration(request):
         saverecord.email = request.POST.get('email')
         saverecord.address = request.POST.get('address')
         saverecord.phone = request.POST.get('phn')
+        saverecord.role=request.POST.get('role')
         saverecord.save()
         name= request.POST.get('name')
         User=get_user_model()
         password=request.POST.get('password')
         user=User.objects.create_user(username=name,password=password)
         user.save()
-        return render(request,'home/login.html')
-    #messages.success(request,'Sorry some error occurred')
-    return render(request,'home/registration.html')
+        return render(request,'home/loggedin.html')
 def loggedin(request):
     return render(request,'home/loggedin.html', {"full_name":request.user.username})
 def invalidlogin(request):
