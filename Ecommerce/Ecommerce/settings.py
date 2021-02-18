@@ -9,18 +9,18 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-import os
-from pathlib import Path
 
+from pathlib import Path
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'zgs%g5*zrg)l3*nv86&8e3g(7@j96&%e1pk^c3k@kkn+5h#q%i'
+SECRET_KEY = 'x)iuue^50jkv3cnjx_)75zraa4+x4jo75(25jp^idptz!%5y3p'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Home.apps.HomeConfig',
+    'home.apps.HomeConfig',
+    
 ]
 
 MIDDLEWARE = [
@@ -76,12 +77,12 @@ WSGI_APPLICATION = 'Ecommerce.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ce008',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '3306',
+       'ENGINE' : 'django.db.backends.mysql',
+       'NAME' : 'ecommerce' , # Name of the database
+       'USER': 'root', #user name for the database
+       'PASSWORD' : '', # password
+       'HOST' : 'localhost', # IP address of the database
+       'PORT' : '3306', # port number of database server
     }
 }
 
@@ -123,3 +124,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS=[
+    os.path.join(BASE_DIR,'static'),
+    
+]
+STATIC_ROOT=os.path.join(BASE_DIR,'assests')
