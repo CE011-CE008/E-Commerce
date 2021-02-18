@@ -1,5 +1,8 @@
 {%extends "home/base.html" %}
 {% block content %}
 <h2> Welcome {{fullname}} you are logged in! </h2>
+{% for us in users%}
+        <p>{{us.email}}</p>
+{% endfor %}
 <p> Click <a href="login"</a> to logout </p>
 {% endblock %}

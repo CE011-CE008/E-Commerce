@@ -21,16 +21,17 @@ def auth_view(request):
     name=request.POST.get('username')
     password=request.POST.get('password')
     check=auth.authenticate(username=name,password=password)
-    all_user = Registration.objects.all()
+    all_user=Registration.objects.all()
     if check is not None:
         for us in all_user:
-            if us.role == 'Admin' and us.name==name and us.password==password:
-                return render(request,'admin/homepage.html')
+            if (us.role=='admin' or us.role=='Admin') and us.name==name and us.password==password:
+                return render(request,'home/loggedin.html')
             else:
                 return render(request,'home/invalidlogin.html')
     else:
         return render(request,'home/invalidlogin.html')
 def registration(request):
+    #messages.success(request,'Sorry some error occurred')
     return render(request,'home/registration.html')
 def register(request):
     if(request.POST.get('name') and request.POST.get('password')):
@@ -49,7 +50,6 @@ def register(request):
         user=User.objects.create_user(username=name,password=password)
         user.save()
         return render(request,'home/login.html')
-    return render(request,'home/registration.html')
 def loggedin(request):
     return render(request,'home/loggedin.html', {"full_name":request.user.username})
 def invalidlogin(request):
