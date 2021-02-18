@@ -21,8 +21,13 @@ def auth_view(request):
     name=request.POST.get('username')
     password=request.POST.get('password')
     check=auth.authenticate(username=name,password=password)
+    all_user=Registration.objects.all()
     if check is not None:
-        return render(request,'home/loggedin.html')
+        for us in all_user:
+            if (us.role=='admin' or us.role=='Admin') and us.name==name and us.password==password:
+                return render(request,'admin_home/homepage.html')
+            else:
+                return render(request,'home/loggedin.html')
     else:
         return render(request,'home/invalidlogin.html')
 def registration(request):
@@ -44,7 +49,7 @@ def register(request):
         password=request.POST.get('password')
         user=User.objects.create_user(username=name,password=password)
         user.save()
-        return render(request,'home/loggedin.html')
+        return render(request,'home/login.html')
 def loggedin(request):
     return render(request,'home/loggedin.html', {"full_name":request.user.username})
 def invalidlogin(request):
