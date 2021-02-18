@@ -25,9 +25,9 @@ def auth_view(request):
     if check is not None:
         for us in all_user:
             if (us.role=='admin' or us.role=='Admin') and us.name==name and us.password==password:
-                return render(request,'admin_home/homepage.html')
+                return render(request,'home/login.html')
             else:
-                return render(request,'home/loggedin.html')
+                return render(request,'home/invalidlogin.html')
     else:
         return render(request,'home/invalidlogin.html')
 def registration(request):
