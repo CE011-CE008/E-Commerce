@@ -1,0 +1,10 @@
+{% extends "firstdbtest/base.html" %}
+{% block content %}
+<h1>Student List</h1>
+
+{% for student in users %}
+    <h1>{{ student.name  }} {{  student.dob }}</h1>
+{% endfor %}
+</ul>
+<p> Click <a href="new">here</a> to add new record. </p>
+{% endblock %}
