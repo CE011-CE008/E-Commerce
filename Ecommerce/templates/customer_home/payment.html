@@ -1,0 +1,22 @@
+<!doctype html>
+
+<html lang="en">
+<title>admin home page</title>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+</head>
+<body>
+<form method="post">
+    <!--{% csrf_token %}-->
+  <h4>Select Payment Methods</h4>
+  <input type="radio" id="GPay" name="pMethod" value="GPay">
+  <label for="GPay">GPay</label><br>
+  <input type="radio" id="Paytm" name="pMethod" value="Paytm">
+  <label for="Paytm">Paytm</label><br>
+  <input type="radio" id="PhonePe" name="pMethod" value="PhonePe">
+  <label for="PhonePe">PhonePe</label>
+  <input type='submit' value="Submit">
+</form>
+</body>
+</html>

@@ -1,0 +1,13 @@
+
+<!DOCTYPE html>
+<html>
+    <head><title>Buy Products</title></head>
+    <body>
+        {% for product in products%}
+           <p>{{product.product_name}}</p><br>
+           <p>{{product.description}}</p><br>
+           <p>{{product.price}}</p><br>
+           <a href='cart?id={{}}'>Add TO Cart</a>
+        {% endfor %}
+    </body>
+</html>

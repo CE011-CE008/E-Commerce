@@ -12,6 +12,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render
 from django.db import connection
 from . import views
+from django.http import HttpResponseRedirect
 
 def login(request):
     return render(request,'home/login.html')
@@ -25,9 +26,9 @@ def auth_view(request):
     if check is not None:
         for us in all_user:
             if (us.role=='admin' or us.role=='Admin') and us.name==name and us.password==password:
-                return render(request,'home/loggedin.html')
+                return HttpResponseRedirect('/admin_home_index')
             else:
-                return render(request,'home/invalidlogin.html')
+                return HttpResponseRedirect('/customer_home_index')
     else:
         return render(request,'home/invalidlogin.html')
 def registration(request):
@@ -42,7 +43,7 @@ def register(request):
         saverecord.email = request.POST.get('email')
         saverecord.address = request.POST.get('address')
         saverecord.phone = request.POST.get('phn')
-        saverecord.role=request.POST.get('role')
+        saverecord.role="customer"
         saverecord.save()
         name= request.POST.get('name')
         User=get_user_model()
