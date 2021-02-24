@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+{% load static %}
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% comment %} <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet"> {% endcomment %}
+
+    <link rel="stylesheet" href="{% static '/home/fonts/icomoon/style.css' %}">
+
+    <link rel="stylesheet" href="{% static '/home/css/owl.carousel.min.css' %}">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static '/home/css/bootstrap.min.css' %}">
+    
+    <!-- Style -->
+    <link rel="stylesheet" href="{% static '/home/css/style.css' %}">
+
+    <title>View Product page</title>
+</head>
+<body>
+<h1 align="center">This is the list of all Present Product in website.......!</h1>
+{% block content %}
+    <table border="2" align="center" >
+       <tr>
+      
+        <th> <font color="blue">Name</font></th>
+        <th> <font color="blue">Price</font></th>
+        <th> <font color="blue">Description</font></th>
+        <th> <font color="blue">Category</font></th>
+        <th> <font color="blue">Date</font></th>
+        <th> <font color="blue">Update</font></th>
+        <th> <font color="blue">Delete</font></th>
+        </tr>
+    {% for p in product%}
+        <tr>
+            <th>{{p.name}}</th>
+            <th>{{p.price}}</th>
+            <th>{{p.description}}</th>
+            <th>{{p.category}}</th>
+            <th>{{p.product_date}}</th>
+            <th><a href="updateProductPage/{{p.id}}">Click</a></th>
+            <th><a href="DeleteProduct/{{p.id}}">Click</a></th>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}
+</body>
+</html>

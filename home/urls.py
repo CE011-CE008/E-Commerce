@@ -19,7 +19,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls import url
 urlpatterns = [
-        path('', views.index, name='index'),
+        path('', views.login, name='login'),
         path('login', views.login, name='login'),
         path('auth', views.auth_view, name='auth'),
         path('invalidlogin', views.invalidlogin, name='invalidlogin'),

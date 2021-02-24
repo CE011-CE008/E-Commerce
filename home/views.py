@@ -16,8 +16,7 @@ from . import views
 
 def login(request):
     return render(request,'home/login.html')
-def index(request):
-   return render(request,"home/login.html")
+
 def auth_view(request):
     name=request.POST.get('username')
     password=request.POST.get('password')
@@ -26,9 +25,9 @@ def auth_view(request):
     if check is not None:
         for us in all_user:
             if (us.role=='admin' or us.role=='Admin') and us.name==name and us.password==password:
-                return HttpResponseRedirect('/admin_home')
+                return HttpResponseRedirect('/admin_indexPage')
             else:
-                return HttpResponseRedirect('/customer')
+                return HttpResponseRedirect('/customer_indexPage')
     else:
         return render(request,'home/invalidlogin.html')
 def registration(request):
