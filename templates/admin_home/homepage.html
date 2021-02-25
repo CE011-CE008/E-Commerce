@@ -7,8 +7,10 @@
 </head>
 <body>
 <h1 align="center">Welcome to admin page......!</h1>
-<a href="addProductPage">Click</a>here to add New Product<br>
-<a href="viewProduct">Click</a>here to View ALL Products<br>
+<a href="/addProductPage/{{id}}">Click</a>here to add New Product<br>
+<a href="/viewProduct/{{id}}">Click</a>here to View ALL Products<br>
+<a href="/updateProfilePage/{{id}}">Click</a>here to Update your Profile<br>
+<a href="/signout">Click</a>here to Sign out<br>
 {% block content %}
 {% endblock %}
 </body>
