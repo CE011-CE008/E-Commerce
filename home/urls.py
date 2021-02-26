@@ -19,7 +19,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls import url
 urlpatterns = [
-        path('', views.login, name='login'),
+        path('', views.index, name='index'),
         path('login', views.login, name='login'),
         path('auth', views.auth_view, name='auth'),
         path('invalidlogin', views.invalidlogin, name='invalidlogin'),
@@ -27,5 +27,6 @@ urlpatterns = [
         path('loggedin', views.loggedin, name='loggedin'),
         path('registration', views.registration, name='registration'),
         path('register', views.register, name='register'),
+        path('term_condition', views.term_condition, name='term_condition'),
 ]
 

@@ -32,9 +32,9 @@
               <div class="text-center mb-5">
                 <h3 class="text-uppercase">Add New Product details</h3>
               </div>
-              <form action="addProduct" method="post">
+              <form action="/addProduct/{{id}}" method="post" enctype="multipart/form-data">
 			  {% csrf_token %}
-                <div class="form-group first">
+                {% comment %} <div class="form-group first">
                   <label for="Product Name">Product Name</label>
                   <input type="text" class="form-control" placeholder="Enter Product Name" name="product_name" >
                 </div>
@@ -51,9 +51,15 @@
                   <input type="text" class="form-control" placeholder="Enter Product Description" name="product_description" >
                 </div>
                 <input type="submit" value="Add Product" class="btn btn-block py-2 btn-primary">
-                <font size=10><a href="/admin_indexPage/{{id}}">Cancle</a>
+                <font size=8><a href="/admin_indexPage/{{id}}">Cancle</a>
 
-   
+    {% endcomment %}
+    {% for field in form  %}
+            <label for="{{field.id_for_label}}" class="label display-3 mt-2" style="font-size:20px">
+            <b>{{field.html_name}}</b></label><br>
+            {{field}}<br>
+    {% endfor %} 
+    <input type="submit" value="Add Product" />
 </form>
 <script src="{% static '/home/js/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static '/home/js/popper.min.js' %}"></script>

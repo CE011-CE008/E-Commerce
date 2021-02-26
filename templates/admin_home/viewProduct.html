@@ -34,13 +34,14 @@
         </tr>
     {% for p in product%}
         <tr>
+            <th><img src="{{p.img_url}}" height=420 width=420></th>
             <th>{{p.name}}</th>
             <th>{{p.price}}</th>
             <th>{{p.description}}</th>
             <th>{{p.category}}</th>
             <th>{{p.product_date}}</th>
-            <th><a href="updateProductPage/{{p.id}}">Click</a></th>
-            <th><a href="DeleteProduct/{{p.id}}">Click</a></th>
+            <th><a href="/updateProductPage/{{p.product_id}}">Click</a></th>
+            <th><a href="/DeleteProduct/{{p.product_id}}">Click</a></th>
         </tr>
     {% endfor %}
 </table>

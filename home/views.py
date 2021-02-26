@@ -15,6 +15,9 @@ from django.db import connection
 from django.http import HttpResponseRedirect
 from . import views
 
+def index(request):
+    return render(request,'home/index.html')
+
 def login(request):
     return render(request,'home/login.html')
 
@@ -37,20 +40,20 @@ def registration(request):
     return render(request,'home/registration.html')
 def register(request):
     if(request.POST.get('name') and request.POST.get('password')):
-        name= request.POST.get('name')
+        # name= request.POST.get('name')
         # User=get_user_model()
         # password=request.POST.get('password')
-        # user=User.objects.create_user(username=name,password=password)
-        # user.save()
+        # temp_user=User.objects.create_user(username=name,password=password)
+        # temp_user.save()
         saverecord = Registration()
-        saverecord.id=user.id
+        # saverecord.user=temp_user
         saverecord.name = request.POST.get('name')
         saverecord.password = request.POST.get('password')
         saverecord.dob = request.POST.get('dob')
         saverecord.email = request.POST.get('email')
         saverecord.address = request.POST.get('address')
         saverecord.phone = request.POST.get('phn')
-        saverecord.role="admin"
+        saverecord.role="customer"
         saverecord.save()
         
         return render(request,'home/login.html')
@@ -61,3 +64,5 @@ def invalidlogin(request):
 def logout(request):
     #auth.logout(request)
     return render(request,'home/logout.html')
+def term_condition(request):
+    return render(request,'home/term_condition.html')
