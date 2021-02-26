@@ -27,7 +27,8 @@ def auth_view(request):
         for us in all_user:
             if (us.role=='admin' or us.role=='Admin') and us.name==name and us.password==password:
                 return HttpResponseRedirect('/admin_home_index')
-            else:
+            elif us.role=='customer' and us.name==name and us.password==password:
+                request.session['id']=us.id
                 return HttpResponseRedirect('/customer_home_index')
     else:
         return render(request,'home/invalidlogin.html')

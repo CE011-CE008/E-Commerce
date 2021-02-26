@@ -11,7 +11,11 @@ class ReceivedProduct(models.Model):
     class Meta:
         db_table = 'receivedproduct'
 class Cart(models.Model):
+    cart_id = models.AutoField(primary_key=True)
+    customer_id = models.IntegerField()
     customer_name = models.CharField(max_length=200)
-    product_name = models.CharField(max_length=200)
+    product_id = models.IntegerField()
     total = models.IntegerField()
     amount = models.FloatField()
+    class Meta:
+        db_table = "cart"
