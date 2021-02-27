@@ -1,0 +1,40 @@
+
+{% load static%}
+    
+<link rel="stylesheet" href="{% static '/admin/style.css' %}">
+
+
+<html>
+<body>
+<div class="table-users">
+   <div class="header">Products</div>
+   
+   <table cellspacing="0" border="1" >
+      <tr>
+         <th>Picture</th>
+         <th width="100">Name</th>
+         <th width="500">Description</th>
+         <th>Category</th>
+         <th>Price</th>
+         <th width="100">Upload Date</th>
+         <th>Update</th>
+         <th>Delete</th>
+      </tr>
+        {% for p in product%}
+        <tr>
+            <th><img src="{{p.image.url}}" height=100 width=100></th>
+            <th>{{p.product_name}}</th>
+            <th>{{p.description}}</th>
+            <th>{{p.category}}</th>
+            <th>{{p.price}}</th>
+            <th >{{p.product_date}}</th>
+            <th><input type=button onClick="location.href='/updateProductPage/{{p.product_id}}'" value='Update'/></th>
+            <th><input type=button onClick="location.href='/DeleteProduct/{{p.product_id}}'" value='Delete'/></th>
+        </tr>
+    {% endfor %}
+    
+</table>
+<p align="center"><font size=4><a href="/admin_indexPage">Home</a></p>
+</div>
+</body>
+</html>
