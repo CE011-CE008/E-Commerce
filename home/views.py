@@ -6,7 +6,7 @@ from django.views.generic import TemplateView
 from django.shortcuts import redirect
 from django.contrib import auth
 from django.contrib.auth import get_user_model
-
+from django.http import HttpResponse
 from django.template.context_processors import csrf
 from home.models import Registration
 from django.contrib.auth.forms import UserCreationForm
@@ -20,7 +20,6 @@ def index(request):
 
 def login(request):
     return render(request,'home/login.html')
-
 def auth_view(request):
     name=request.POST.get('username')
     password=request.POST.get('password')
@@ -30,8 +29,10 @@ def auth_view(request):
     #if check is not None:
     for us in all_user:
         if us.role=="admin" and us.name==name and us.password==password:
-            pth='admin_indexPage/'+str(us.id)
-            return HttpResponseRedirect(pth)
+            pth='admin_indexPage'
+            response = HttpResponseRedirect(pth)
+            response.set_cookie("user_id", us.id)
+            return response
         elif us.role=="customer" and us.name==name and us.password==password:
             return render(request,'customer/homepage.html')
     return render(request,'home/invalidlogin.html')
@@ -63,6 +64,8 @@ def invalidlogin(request):
     return render(request,'home/invalidlogin.html')
 def logout(request):
     #auth.logout(request)
-    return render(request,'home/logout.html')
+    return render(request,'home/index.html')
 def term_condition(request):
     return render(request,'home/term_condition.html')
+def about_us(request):
+    return render(request,'home/about_us.html')

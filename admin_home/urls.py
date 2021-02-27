@@ -19,15 +19,15 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls import url
 urlpatterns = [
-        path('admin_indexPage/<slug:slug>', views.index, name='index'),
-        path('addProduct/<slug:slug>', views.addProduct, name='addProduct'),
-        path('viewProduct/<slug:slug>', views.viewProduct, name='viewProduct'),
-        path('addProductPage/<slug:slug>', views.addProductPage, name='addProductPage'),
+        path('admin_indexPage', views.index, name='index'),
+        path('addProduct', views.addProduct, name='addProduct'),
+        path('viewProduct', views.viewProduct, name='viewProduct'),
+        path('addProductPage', views.addProductPage, name='addProductPage'),
         path('updateProductPage/<slug:slug>', views.updateProductPage, name='updateProductPage'),
         path('DeleteProduct/<slug:slug>', views.deleteProduct, name='deleteProduct'),
         path('UpdateProduct/<slug:slug>', views.updateProduct, name='updateProduct'),
-        path('updateProfilePage/<slug:slug>', views.updateProfilePage, name='updateProfilePage'),
-        path('UpdateProfile/<slug:slug>', views.updateProfile, name='updateProfile'),
+        path('updateProfilePage', views.updateProfilePage, name='updateProfilePage'),
+        path('UpdateProfile', views.updateProfile, name='updateProfile'),
         path('signout', views.signout, name='signout'),
         
 ]

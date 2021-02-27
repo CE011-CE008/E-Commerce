@@ -1,17 +1,66 @@
 <!DOCTYPE html>
 {% load static  %}
-<html>
+<style>
+body {
+  background-image: url('{% static '/admin/images/bg1.png' %}');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 280;
+}
+</style>
+
+<html lang="en">
 <head>
-<meta charset="utf­8">
-<title>MyLogin!</title>
-</head>
-<body>
-<h1 align="center">Welcome to admin page......!</h1>
-<a href="/addProductPage/{{id}}">Click</a>here to add New Product<br>
-<a href="/viewProduct/{{id}}">Click</a>here to View ALL Products<br>
-<a href="/updateProfilePage/{{id}}">Click</a>here to Update your Profile<br>
-<a href="/signout">Click</a>here to Sign out<br>
+
+  <!-- SITE TITTLE -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Old One...</title>
+  
+  <!-- FAVICON -->
+  <link href="{% static 'index/img/favicon.png' %}" rel="shortcut icon">
+  <link rel="stylesheet" href="{% static 'index/plugins/bootstrap/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'index/plugins/bootstrap/css/bootstrap-slider.css' %}">
+  <!-- Font Awesome -->
+  <link href="{% static 'index/plugins/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+  <!-- Owl Carousel -->
+  <link href="{% static 'index/plugins/slick-carousel/slick/slick.css' %}" rel="stylesheet">
+  <link href="{% static 'index/plugins/slick-carousel/slick/slick-theme.css' %}" rel="stylesheet">
+  <!-- Fancy Box -->
+  <link href="{% static 'index/plugins/fancybox/jquery.fancybox.pack.css' %}" rel="stylesheet">
+  <link href="{% static 'indexplugins/jquery-nice-select/css/nice-select.css' %}" rel="stylesheet">
+  <!-- CUSTOM CSS -->
+  <link href="{% static 'index/css/style.css' %}" rel="stylesheet">
+<body >
+<h1 align="center">Welcome Boss how Can I help You????......!</h1><br><br>
+
+								<a class="nav-link text-white add-button" href="/addProductPage"><i class="fa fa-plus-circle"></i>Add Product</a><nbsp>
+					
+								<a class="nav-link text-white add-button" href="/viewProduct"></i>View Product</a>
+						  
+								<a class="nav-link text-white add-button" href="/updateProfilePage">Update Profile</a>
+						
+                            		<a class="nav-link text-white add-button" href="/signout"></i>Log Out</a>
+						
+						
+
 {% block content %}
 {% endblock %}
 </body>
 </html>
+<script src="{% static 'index/plugins/jQuery/jquery.min.js' %}"></script>
+<script src="{% static 'index/plugins/bootstrap/js/popper.min.js' %}"></script>
+<script src="{% static 'index/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'index/plugins/bootstrap/js/bootstrap-slider.js' %}"></script>
+  <!-- tether js -->
+<script src="{% static 'index/plugins/tether/js/tether.min.js' %}"></script>
+<script src="{% static 'index/plugins/raty/jquery.raty-fa.js' %}"></script>
+<script src="{% static 'index/plugins/slick-carousel/slick/slick.min.js' %}"></script>
+<script src="{% static 'index/plugins/jquery-nice-select/js/jquery.nice-select.min.js' %}"></script>
+<script src="{% static 'index/plugins/fancybox/jquery.fancybox.pack.js' %}"></script>
+<script src="{% static 'index/plugins/smoothscroll/SmoothScroll.min.js' %}"></script>
+<!-- google map -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcABaamniA6OL5YvYSpB3pFMNrXwXnLwU&libraries=places"></script>
+<script src="{% static 'index/plugins/google-map/gmap.js' %}"></script>
+<script src="{% static 'index/js/script.js' %}"></script>

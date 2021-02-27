@@ -22,7 +22,7 @@
   
 
   <div class="d-md-flex half">
-    <div class="bg" style="background-image: url('/static/admin/imgs/product_bg.gif')"></div>
+    <div class="bg" style="background-image: url('/static/admin/images/product_bg.jpg')"></div>
     <div class="contents">
 
       <div class="container">
@@ -32,7 +32,7 @@
               <div class="text-center mb-5">
                 <h3 class="text-uppercase">Add New Product details</h3>
               </div>
-              <form action="/addProduct/{{id}}" method="post" enctype="multipart/form-data">
+              <form action="/addProduct" method="post" enctype="multipart/form-data">
 			  {% csrf_token %}
                 {% comment %} <div class="form-group first">
                   <label for="Product Name">Product Name</label>
@@ -51,15 +51,21 @@
                   <input type="text" class="form-control" placeholder="Enter Product Description" name="product_description" >
                 </div>
                 <input type="submit" value="Add Product" class="btn btn-block py-2 btn-primary">
-                <font size=8><a href="/admin_indexPage/{{id}}">Cancle</a>
+                
 
     {% endcomment %}
     {% for field in form  %}
-            <label for="{{field.id_for_label}}" class="label display-3 mt-2" style="font-size:20px">
+             <div class="form-group first">
+                  <label for="{{field.id_for_label}}">{{field.html_name}}</label>
+                  <div <class="form-control" > {{field}}</div>
+                  {% comment %} {{field}}               {% endcomment %}
+                </div>
+            {% comment %} <label for="{{field.id_for_label}}" class="label display-3 mt-2" style="font-size:20px">
             <b>{{field.html_name}}</b></label><br>
-            {{field}}<br>
+            {{field}}<br> {% endcomment %}
     {% endfor %} 
-    <input type="submit" value="Add Product" />
+    <input type="submit" value="Add Product" class="btn btn-block py-2 btn-primary"/>
+    <font size=6><a href="/admin_indexPage">Cancle</a>
 </form>
 <script src="{% static '/home/js/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static '/home/js/popper.min.js' %}"></script>
