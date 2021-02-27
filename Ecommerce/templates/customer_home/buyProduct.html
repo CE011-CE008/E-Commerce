@@ -1,13 +1,22 @@
-
 <!DOCTYPE html>
 <html>
     <head><title>Buy Products</title></head>
     <body>
+        <style>
+
+        </style>
         {% for product in products %}
-           <p>{{product.product_name}}</p><br>
+           <img src="{{product.image.url}}" alt='product Image'/>
+         <div class='details'>
+           <p>{{product.product_name}}</p></br>
+           <p>{{product.description}}</p></br>
+           <p>{{product.price}}</p></br>
+           <!--<p>{{product.product_name}}</p><br>
            <p>{{product.description}}</p><br>
-           <p>{{product.price}}</p><br>
+           <p>{{product.price}}</p>--><br>
+           <!--Enter quantity: <input type='text' name='quantity' value='1'>-->
            <a href='cart?product_id={{product.product_id}}'>Add To Cart</a>
+           </div>
         {% endfor %}
         <a href='payment'>Make Payment</a>
     </body>

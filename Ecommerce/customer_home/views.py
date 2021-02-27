@@ -8,6 +8,14 @@ def customer_home_index(request):
     return render(request,'customer_home/homepage.html')
 def sellProduct(request):
     return render(request,'customer_home/SellProduct.html')
+def success(request):
+    p = ReceivedProduct()
+    p.product_name = request.POST.get('product')
+    p.description = request.POST.get('description')
+    p.price = request.POST.get('price')
+    p.images = request.FILES['images']
+    p.save()
+    return render(request,'customer_home/success.html')
 def payment(request):
     carts = Cart.objects.filter(customer_id=request.session.get('id'))
     items=0

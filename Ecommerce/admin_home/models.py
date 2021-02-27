@@ -7,5 +7,6 @@ class Product_Details(models.Model):
     product_name = models.CharField(max_length=200)
     description = models.CharField(max_length=1200)
     price = models.FloatField()
+    image = models.ImageField(upload_to='pics/')
     class Meta:
         db_table = 'product_details'
