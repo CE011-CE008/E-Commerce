@@ -34,7 +34,7 @@
               </div>
               <form action="/addProduct" method="post" enctype="multipart/form-data">
 			  {% csrf_token %}
-                {% comment %} <div class="form-group first">
+               <div class="form-group first">
                   <label for="Product Name">Product Name</label>
                   <input type="text" class="form-control" placeholder="Enter Product Name" name="product_name" >
                 </div>
@@ -50,20 +50,10 @@
                   <label for="Product Description">Product Description</label>
                   <input type="text" class="form-control" placeholder="Enter Product Description" name="product_description" >
                 </div>
-                <input type="submit" value="Add Product" class="btn btn-block py-2 btn-primary">
-                
-
-    {% endcomment %}
-    {% for field in form  %}
-             <div class="form-group first">
-                  <label for="{{field.id_for_label}}">{{field.html_name}}</label>
-                  <div <class="form-control" > {{field}}</div>
-                  {% comment %} {{field}}               {% endcomment %}
+                <div class="form-group last mb-3">
+                  <label for="images">Provide Images</label>
+                  <input type="file" class="form-control" placeholder="Provide images" name="image" id="image">
                 </div>
-            {% comment %} <label for="{{field.id_for_label}}" class="label display-3 mt-2" style="font-size:20px">
-            <b>{{field.html_name}}</b></label><br>
-            {{field}}<br> {% endcomment %}
-    {% endfor %} 
     <input type="submit" value="Add Product" class="btn btn-block py-2 btn-primary"/>
     <font size=6><a href="/admin_indexPage">Cancle</a>
 </form>

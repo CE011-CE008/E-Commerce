@@ -27,32 +27,17 @@ def index(request):
    print(request.COOKIES['user_id'])
    return render(request,'admin_home/homepage.html',userdict)
 def addProduct(request):
-   form = Add_product_form(request.POST, request.FILES)
-   if form.is_valid():
-      product_img = form.cleaned_data['product_img']
-      name = form.cleaned_data['name']
-      price = form.cleaned_data['price']
-      description = form.cleaned_data['description']
-      category = form.cleaned_data['category']
-      print(product_img,name,price,description,category)
-      timestamp=str(datetime.timestamp(datetime.now()))
       p=Product_details()
-      p.name=name
-      p.price=price
-      p.description=description
-      p.category=category
-      path = default_storage.save('product_images/'+timestamp+'.jpg', ContentFile(product_img.read()))
-      p.img_url='http://localhost:8000/media/product_images/'+timestamp+'.jpg'
+      p.name =request.POST.get('product_name')
+      p.price =request.POST.get('product_price')
+      p.description =request.POST.get('product_description')
+      p.category =request.POST.get('product_category')
+      p.img_url=request.FILES['image']
       p.save()
-   else :
-      print('not valid')
-   pth='/admin_indexPage'
-   return HttpResponseRedirect(pth)
+      pth='/admin_indexPage'
+      return HttpResponseRedirect(pth)
 def addProductPage(request):
-   userdict={}
-   form=Add_product_form()
-   userdict['form']=form
-   return render(request,'admin_home/addProduct.html',userdict)
+   return render(request,'admin_home/addProduct.html')
 def deleteProduct(request,slug):
    Product_details.objects.filter(product_id=slug).delete()
    pth='/viewProduct'
