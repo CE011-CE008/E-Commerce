@@ -1,6 +1,4 @@
-
 # Create your views here.
-
 #from django.shortcuts import render_to_response
 from django.views.generic import TemplateView
 from django.shortcuts import redirect
@@ -28,13 +26,16 @@ def auth_view(request):
    
     #if check is not None:
     for us in all_user:
-        if us.role=="admin" and us.name==name and us.password==password:
+        if us.role=="Admin" and us.name==name and us.password==password:
             pth='admin_indexPage'
             response = HttpResponseRedirect(pth)
-            response.set_cookie("user_id", us.id)
+            response.set_cookie("user_id", us.user_id)
             return response
         elif us.role=="customer" and us.name==name and us.password==password:
-            return render(request,'customer/homepage.html')
+            pth='customer_home_index'
+            response = HttpResponseRedirect(pth)
+            response.set_cookie("user_id", us.user_id)
+            return response
     return render(request,'home/invalidlogin.html')
 def registration(request):
     #messages.success(request,'Sorry some error occurred')
@@ -63,9 +64,10 @@ def loggedin(request):
 def invalidlogin(request):
     return render(request,'home/invalidlogin.html')
 def logout(request):
-    #auth.logout(request)
     return render(request,'home/index.html')
 def term_condition(request):
     return render(request,'home/term_condition.html')
 def about_us(request):
     return render(request,'home/about_us.html')
+def contactUs(request):
+    return render(request,'home/contactUs.html')

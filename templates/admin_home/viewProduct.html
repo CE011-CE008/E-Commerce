@@ -22,8 +22,8 @@
       </tr>
         {% for p in product%}
         <tr>
-            <th><img src="{{p.img_url.url}}" height=100 width=100></th>
-            <th>{{p.name}}</th>
+            <th><img src="{{p.image.url}}" height=100 width=100></th>
+            <th>{{p.product_name}}</th>
             <th>{{p.description}}</th>
             <th>{{p.category}}</th>
             <th>{{p.price}}</th>

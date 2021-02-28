@@ -6,9 +6,8 @@ from django.views.generic import TemplateView
 from django.shortcuts import redirect
 from django.contrib import auth
 from django.contrib.auth import models
-from admin_home.models import Product_details
+from admin_home.models import Product_Details
 from home.models import Registration
-from admin_home.forms import Add_product_form
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from django.conf import settings
@@ -27,19 +26,19 @@ def index(request):
    print(request.COOKIES['user_id'])
    return render(request,'admin_home/homepage.html',userdict)
 def addProduct(request):
-      p=Product_details()
-      p.name =request.POST.get('product_name')
+      p=Product_Details()
+      p.product_name =request.POST.get('product_name')
       p.price =request.POST.get('product_price')
       p.description =request.POST.get('product_description')
       p.category =request.POST.get('product_category')
-      p.img_url=request.FILES['image']
+      p.image=request.FILES['image']
       p.save()
       pth='/admin_indexPage'
       return HttpResponseRedirect(pth)
 def addProductPage(request):
    return render(request,'admin_home/addProduct.html')
 def deleteProduct(request,slug):
-   Product_details.objects.filter(product_id=slug).delete()
+   Product_Details.objects.filter(product_id=slug).delete()
    pth='/viewProduct'
    return HttpResponseRedirect(pth)
 def updateProduct(request,slug):
@@ -47,23 +46,23 @@ def updateProduct(request,slug):
    price=request.POST.get('product_price')
    description=request.POST.get('product_description')
    category=request.POST.get('product_category')
-   p=Product_details.objects.filter(product_id=slug).update(name=name)
-   p=Product_details.objects.filter(product_id=slug).update(price=price)
-   p=Product_details.objects.filter(product_id=slug).update(category=category)
-   p=Product_details.objects.filter(product_id=slug).update(description=description)
+   p=Product_Details.objects.filter(product_id=slug).update(product_name=name)
+   p=Product_Details.objects.filter(product_id=slug).update(price=price)
+   p=Product_Details.objects.filter(product_id=slug).update(category=category)
+   p=Product_Details.objects.filter(product_id=slug).update(description=description)
    pth='/viewProduct'
    return HttpResponseRedirect(pth)
 def updateProductPage(request,slug):
-   p=Product_details.objects.filter(product_id=slug)[0]
+   p=Product_Details.objects.filter(product_id=slug)[0]
    userdict={}
    userdict['product_id']=p.product_id
-   userdict['name']=p.name
+   userdict['name']=p.product_name
    userdict['category']=p.category
    userdict['price']=p.price
    userdict['description']=p.description
    return render(request,'admin_home/updateProduct.html',userdict)
 def viewProduct(request):
-   products=Product_details.objects.all()
+   products=Product_Details.objects.all()
    userdict={}
    userdict['id']=request.COOKIES['user_id']
    userdict['product']=products
@@ -74,9 +73,9 @@ def signout(request):
    return response
 def updateProfilePage(request):
    uid=request.COOKIES['user_id']
-   p=Registration.objects.filter(id=uid)[0]
+   p=Registration.objects.filter(user_id=uid)[0]
    userdict={}
-   userdict['id']=p.id
+   userdict['id']=p.user_id
    userdict['name']=p.name
    userdict['password']=p.password
    userdict['dob']=p.dob
@@ -92,13 +91,13 @@ def updateProfile(request):
    email=request.POST.get('email')
    address=request.POST.get('address')
    phone=request.POST.get('phn')
-   Registration.objects.filter(id=uid).update(name=name)
-   Registration.objects.filter(id=uid).update(password=password)
-   Registration.objects.filter(id=uid).update(email=email)
-   Registration.objects.filter(id=uid).update(address=address)
-   Registration.objects.filter(id=uid).update(phone=phone)
-   Registration.objects.filter(id=uid).update(name=name)
-   Registration.objects.filter(id=uid).update(password=password)
+   Registration.objects.filter(user_id=uid).update(name=name)
+   Registration.objects.filter(user_id=uid).update(password=password)
+   Registration.objects.filter(user_id=uid).update(email=email)
+   Registration.objects.filter(user_id=uid).update(address=address)
+   Registration.objects.filter(user_id=uid).update(phone=phone)
+   Registration.objects.filter(user_id=uid).update(name=name)
+   Registration.objects.filter(user_id=uid).update(password=password)
    # User=get_user_model()
    # User.objects.filter(id=slug).update(username=name)
    # User.objects.filter(id=slug).update(password=password)
