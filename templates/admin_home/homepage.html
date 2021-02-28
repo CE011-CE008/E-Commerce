@@ -1,13 +1,5 @@
 <!DOCTYPE html>
 {% load static  %}
-<style>
-body {
-  background-image: url('{% static '/admin/images/bg1.png' %}');
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: 280;
-}
-</style>
 
 <html lang="en">
 <head>
@@ -19,7 +11,7 @@ body {
   <title>Old One...</title>
   
   <!-- FAVICON -->
-  <link href="{% static 'index/img/favicon.png' %}" rel="shortcut icon">
+  <link href="{% static 'index/images/favicon.png' %}" rel="shortcut icon">
   <link rel="stylesheet" href="{% static 'index/plugins/bootstrap/css/bootstrap.min.css' %}">
   <link rel="stylesheet" href="{% static 'index/plugins/bootstrap/css/bootstrap-slider.css' %}">
   <!-- Font Awesome -->
@@ -32,13 +24,37 @@ body {
   <link href="{% static 'indexplugins/jquery-nice-select/css/nice-select.css' %}" rel="stylesheet">
   <!-- CUSTOM CSS -->
   <link href="{% static 'index/css/style.css' %}" rel="stylesheet">
+  <style>
+    body {
+      background-image: url('{% static 'admin/images/bg1.png' %}');
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: 280;
+    }
+    a{
+      float: right;
+      color: #f2f2f2;
+      margin-right: 10px;
+    }
+    a:hover{
+      background-color: #ddd;
+      color: black
+    }
+    .nav{
+      color: black;
+      float: right;
+    }
+
+    </style>
+</head>
 <body >
 <h1 align="center">Welcome Boss how Can I help You????......!</h1><br><br>
+<div class="nav">
 <a class="nav-link text-white add-button" href="/addProductPage"><i class="fa fa-plus-circle"></i>Add Product</a><nbsp>
 <a class="nav-link text-white add-button" href="/viewProduct"></i>View Product</a>
 <a class="nav-link text-white add-button" href="/updateProfilePage">Update Profile</a>
 <a class="nav-link text-white add-button" href="/signout" style="padding-left:500px;" </i>Log Out</a>
-						
+</div>
 						
 
 {% block content %}
