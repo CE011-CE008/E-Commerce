@@ -33,7 +33,9 @@
     </head>
     <body>
         <div class="bg" style="color:wheat">
+        {% if products %}
         <h3 style="color: aliceblue;">You can buy products as per your need here....</h3></br>
+        {% endif %}
         {% for product in products %}
            <div class='products'>
            <img src="{{product.image.url}}" alt='product Image' width="260" height="250"/>
@@ -43,6 +45,10 @@
            <a href='cart?product_id={{product.product_id}}'>Add To Cart</a></br></br>
            </div>
         {% endfor %}
+        {% if not products and 'search' in request.GET %}
+            <h3> No result found for your query '{{search}} '...</h3></br>
+            <h3>You can find more products <a href='buy'>here.</a></h3>
+        {% endif %}
         </div>
     </body>
 </html>

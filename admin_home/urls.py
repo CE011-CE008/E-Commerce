@@ -22,13 +22,10 @@ urlpatterns = [
         path('admin_indexPage', views.index, name='index'),
         path('addProduct', views.addProduct, name='addProduct'),
         path('viewProduct', views.viewProduct, name='viewProduct'),
-        path('addProductPage', views.addProductPage, name='addProductPage'),
-        path('updateProductPage/<slug:slug>', views.updateProductPage, name='updateProductPage'),
         path('DeleteProduct/<slug:slug>', views.deleteProduct, name='deleteProduct'),
         path('UpdateProduct/<slug:slug>', views.updateProduct, name='updateProduct'),
-        path('updateProfilePage', views.updateProfilePage, name='updateProfilePage'),
         path('UpdateProfile', views.updateProfile, name='updateProfile'),
         path('signout', views.signout, name='signout'),
+        path('AddAdmin', views.addAdmin, name='addAdmin'),
         
 ]
-

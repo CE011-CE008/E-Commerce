@@ -1,5 +1,5 @@
 from django.db import models
-
+from admin_home.models import Product_Details
 # Create your models here.
 
 class ReceivedProduct(models.Model):
@@ -13,9 +13,18 @@ class ReceivedProduct(models.Model):
 class Cart(models.Model):
     cart_id = models.AutoField(primary_key=True)
     customer_id = models.IntegerField()
-    customer_name = models.CharField(max_length=200)
-    product_id = models.IntegerField()
-    total = models.IntegerField()
-    amount = models.FloatField()
+    #customer_name = models.CharField(max_length=200)
+    #product_id = models.IntegerField()
+    #total = models.IntegerField()
+    #amount = models.FloatField()
     class Meta:
         db_table = "cart"
+    def __str__(self):
+              return self.product_name
+class Cart_Details(models.Model):
+    cart_id = models.IntegerField()
+    product_id = models.IntegerField()
+    items  = models.IntegerField()
+    price = models.FloatField()
+    class Meta:
+        db_table='cart_details'

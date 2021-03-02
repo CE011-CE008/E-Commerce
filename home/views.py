@@ -12,7 +12,7 @@ from django.shortcuts import render
 from django.db import connection
 from django.http import HttpResponseRedirect
 from . import views
-
+from customer_home.models import Cart
 def index(request):
     return render(request,'home/index.html')
 
@@ -29,10 +29,13 @@ def auth_view(request):
         if us.role=="Admin" and us.name==name and us.password==password:
             pth='admin_indexPage'
             response = HttpResponseRedirect(pth)
-            response.set_cookie("user_id", us.id)
+            response.set_cookie("user_id", us.user_id)
             return response
         elif us.role=="customer" and us.name==name and us.password==password:
-            return render(request,'customer_home/homepage.html')
+            pth='customer_home_index'
+            response = HttpResponseRedirect(pth)
+            response.set_cookie("user_id", us.user_id)
+            return response
     return render(request,'home/invalidlogin.html')
 def registration(request):
     #messages.success(request,'Sorry some error occurred')
@@ -54,7 +57,9 @@ def register(request):
         saverecord.phone = request.POST.get('phn')
         saverecord.role="customer"
         saverecord.save()
-        
+        c = Cart()
+        c.customer_id = saverecord.user_id
+        c.save()
         return render(request,'home/login.html')
 def loggedin(request):
     return render(request,'home/loggedin.html', {"full_name":request.user.username})
