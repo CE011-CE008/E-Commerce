@@ -178,10 +178,20 @@ span.price {
   </div>
   <div class="col-25">
     <div class="container">
+    <table>
       <h4>Cart <span class="price" style="color:black"><i class="fa fa-shopping-cart"></i> <b>{{items}}</b></span></h4>
-      {% for key, value in products.items %}
-      <p><a href="#">{{key}}</a> <span class="price">{{value}}</span></p>
-      {% endfor %}
+      {% for ky, val in itm.items %}
+        {% for key, value in product.items %}
+        {% ifequal ky key %}
+            <tr>
+            <td>{{value.product_name}}</td>
+            <td style="padding-left:20px">{{val}}</td>
+            <td style="padding-left:80px">{{value.price}}</td>
+            </tr>
+        {% endifequal %}
+    {% endfor %}
+    {% endfor %}
+    <table>
       <!--<p><a href="#">Product 2</a> <span class="price">$5</span></p>
       <p><a href="#">Product 3</a> <span class="price">$8</span></p>
       <p><a href="#">Product 4</a> <span class="price">$2</span></p>-->

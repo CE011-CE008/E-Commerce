@@ -1,7 +1,3 @@
-
-# Create your views here.
-
-#from django.shortcuts import render_to_response
 from django.views.generic import TemplateView
 from django.shortcuts import redirect
 from django.contrib import auth
@@ -19,7 +15,7 @@ from django.db import connection
 from django.http import HttpResponseRedirect
 from . import views
 from datetime import datetime
-
+from customer_home.models import ReceivedProduct
 def index(request):
    userdict={}
    userdict['id']=request.COOKIES['user_id']
@@ -128,3 +124,6 @@ def addAdmin(request):
         saverecord.role="admin"
         saverecord.save()
         return render(request,'home/login.html')
+def viewReceivedProduct(request):   
+   products = ReceivedProduct.objects.all()
+   return render(request,'admin_home/viewRecievedProduct.html',{'products':products})

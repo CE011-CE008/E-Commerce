@@ -34,7 +34,13 @@
               <div class="text-center mb-5">
                 <h3 class="text-uppercase">Login to <strong>Online shopping hub</strong></h3>
               </div>
+               {% if message %}
+                  <div class="alert alert-{{class}}">
+                      <script>alert("{{message}}")</script>
+                  </div>
+              {% endif%}
               <form action="auth" method="post">
+             
 			  {% csrf_token %}
                 <div class="form-group first">
                   <label for="username">Email-id</label>
@@ -46,7 +52,7 @@
                 </div>
                  <input type="submit" value="Log In" class="btn btn-block py-2 btn-primary">
 				
-				Don't have Account?<a href="register">sign up</a></br>
+				Don't have Account?<a href="register">sign up</a></br></br></br>
         <a href="forgot">Forgot Password?</a>
 				</div>
                

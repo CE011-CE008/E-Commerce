@@ -27,6 +27,7 @@ urlpatterns = [
         path('UpdateProfile', views.updateProfile, name='updateProfile'),
         path('signout', views.signout, name='signout'),
         path('AddAdmin', views.addAdmin, name='addAdmin'),
+        path('viewReceivedProduct',views.viewReceivedProduct,name='viewReceivedProduct')
         
 ]
 

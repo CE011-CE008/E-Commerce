@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 from django.http import HttpResponse
 from django.template.context_processors import csrf
 from home.models import Registration
+from customer_home.models import Cart
 from home.models import Feedback
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render
@@ -56,8 +57,14 @@ def auth_view(request):
                 return render(request,'home/registration.html',context)
             pth='customer_home_index'
             response = HttpResponseRedirect(pth)
+            response.set_cookie("user_id", us.user_id)
             return response
-    return render(request,'home/invalidlogin.html')
+    else:
+        context={
+                'message':'Your Password or email-id might be wrong.....'
+        }
+        return render(request,'home/login.html',context)
+    return HttpResponseRedirect('/login')
 def register(request):
     if request.method=='GET':
         return render(request,'home/registration.html')
@@ -75,7 +82,8 @@ def register(request):
         if exit_user:
             context={'message':'Email already registered try with different..','class':'danger'}
             return render(request,'home/registration.html',context)
-        saverecord.role="admin"
+        saverecord.cart_id=0
+        saverecord.role="customer"
         otp=str(random.randint(99999,999999))
         request.session['otp']=otp
         request.session['email']=request.POST.get('email')
@@ -102,7 +110,13 @@ def verify_otp(request):
     cur_otp=request.POST.get('otp')
     if cur_otp==request.session['otp']:
         Registration.objects.filter(email=request.session['email']).update(otp=request.session['otp'])
-        return HttpResponseRedirect('/login')
+        customer = Registration.objects.filter(email=request.session['email'])[0]
+        c = Cart(customer_id=customer.user_id)
+        c.save()
+        context={
+            'message':'Sucessfull registered now you can login...'
+        }
+        return render(request,'home/login.html',context)
     else:
         context={'message':'Invalid Otp....'}
         return render(request,'home/otp.html',context)

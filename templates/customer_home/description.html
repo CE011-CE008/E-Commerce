@@ -9,10 +9,12 @@
          }
         .products{
             display: inline-block;
-            padding-right: 50px;
-            padding-bottom: 50px;
+            margin-right: 500px;
+            margin-bottom: 500px;
+            margin=auto;
         }
         img{
+            
             border-radius: 15px;
             border: 2px solid;
         }
@@ -36,10 +38,11 @@
         <div class="bg" style="color:wheat">
         {% for product in products %}
            <div class='products'>
-           <img src="{{product.image.url}}" alt='product Image' width="260" height="250"/>
+           <img src="{{product.image.url}}" alt='product Image' width="260" height="250" />
            <p>{{product.product_name}}</p>
+           <p>{{product.description}}</p>
            <p>{{product.price}}</p>
-           <a href='read_more/{{product.product_id}}'>more</a></br></br>
+           <a href='http://127.0.0.1:8000/cart?product_id={{product.product_id}}'>Add To Cart</a></br></br>
            </div>
         {% endfor %}
         </div>

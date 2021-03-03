@@ -1,0 +1,37 @@
+{% load static%}
+    
+<link rel="stylesheet" href="{% static '/admin/style.css' %}">
+
+
+<html>
+<body>
+<div class="table-users">
+   <div class="header">Received Products</div>
+   
+   <table cellspacing="0" border="1" >
+      <tr>
+         <th>Picture</th>
+         <th width="100">Name</th>
+         <th width="500">Description</th>
+         <th>Price</th>
+         <th>Seller Name</th>
+         <th>Seller Email</th>
+      </tr>
+        {% for p in products %}
+        <tr>
+            <th><img src="{{p.images.url}}" height=150 width=150></th>
+            <th width=120>{{p.product_name}}</th>
+            <th>{{p.description}}</th>
+            <th width=100>{{p.price}}</th>
+            <th width=150>{{p.seller_name}}</th>
+            <th width=180>{{p.seller_email}}</th>
+           <!-- <th><input type=button onClick="location.href='/UpdateProduct/{{p.product_id}}'" value='Update'/></th>
+            <th><input type=button onClick="location.href='/DeleteProduct/{{p.product_id}}'" value='Delete'/></th>-->
+        </tr>
+    {% endfor %}
+    
+</table>
+<p align="center"><font size=4><a href="/admin_indexPage">Home</a></p>
+</div>
+</body>
+</html>
