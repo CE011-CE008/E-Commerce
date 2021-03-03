@@ -28,4 +28,6 @@ urlpatterns = [
         path('term_condition', views.term_condition, name='term_condition'),
         path('about_us', views.about_us, name='about_us'),
         path('contactUs',views.contactUs, name='contactUs'),
+        path('otp',views.otp,name='otp'),
+        path('verify',views.verify_otp,name='verify_otp'),
 ]

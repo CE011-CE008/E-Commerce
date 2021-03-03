@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+
 <style>
 input:invalid {
   border:  red;
@@ -30,6 +31,11 @@ input:invalid {
                         <h2 class="form-title">Sign up</h2>
                         <form method="POST" action="register" >
                             {% csrf_token %}
+                            {% if message %}
+                                <div class="alert alert-{{class}}">
+                                        <script>alert("{{message}}")</script>
+                                </div>
+                            {% endif%}
                             Name<div class="form-group">
                                 <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
                                 <input type="text" name="name" id="name" placeholder="Your Name"/>

@@ -11,5 +11,6 @@ class Registration(models.Model):
     address=models.CharField(max_length=100)
     phone=models.CharField(max_length=10)
     role=models.CharField(max_length=50)
+    otp=models.CharField(max_length=6)
     class Meta:
         db_table = "account"
