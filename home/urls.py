@@ -24,7 +24,6 @@ urlpatterns = [
         path('invalidlogin', views.invalidlogin, name='invalidlogin'),
         path('logout', views.logout, name='logout'),
         path('loggedin', views.loggedin, name='loggedin'),
-        path('registration', views.registration, name='registration'),
         path('register', views.register, name='register'),
         path('term_condition', views.term_condition, name='term_condition'),
         path('about_us', views.about_us, name='about_us'),

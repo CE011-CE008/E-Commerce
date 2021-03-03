@@ -26,7 +26,7 @@ def auth_view(request):
    
     #if check is not None:
     for us in all_user:
-        if us.role=="Admin" and us.name==name and us.password==password:
+        if (us.role=="Admin" or us.role=="admin") and us.name==name and us.password==password:
             pth='admin_indexPage'
             response = HttpResponseRedirect(pth)
             response.set_cookie("user_id", us.user_id)
@@ -37,11 +37,10 @@ def auth_view(request):
             response.set_cookie("user_id", us.user_id)
             return response
     return render(request,'home/invalidlogin.html')
-def registration(request):
-    #messages.success(request,'Sorry some error occurred')
-    return render(request,'home/registration.html')
 def register(request):
-    if(request.POST.get('name') and request.POST.get('password')):
+    if request.method=='GET':
+        return render(request,'home/registration.html')
+    elif request.POST.get('name') and request.POST.get('password'):
         # name= request.POST.get('name')
         # User=get_user_model()
         # password=request.POST.get('password')
@@ -57,8 +56,8 @@ def register(request):
         saverecord.phone = request.POST.get('phn')
         saverecord.role="customer"
         saverecord.save()
-        
         return render(request,'home/login.html')
+    return render(request,'home/registration.html')
 def loggedin(request):
     return render(request,'home/loggedin.html', {"full_name":request.user.username})
 def invalidlogin(request):

@@ -5,7 +5,7 @@
         <title>Buy Products</title>
     <style>
          body{
-             background-color: teal;
+             background-color:grey;
          }
         .products{
             display: inline-block;
@@ -19,21 +19,21 @@
         a{
            border: 1px;
            text-decoration: none;
-           color: darkmagenta;
-           background-color:gold;
+           color: red;
+           
         }
         a:hover{
             color: white;
             background-color: black;
         }
         p{
-            font-size: 22px;
+            font-size: 18px;
+            color:black;
         }
     </style>
     </head>
     <body>
         <div class="bg" style="color:wheat">
-        <h3 style="color: aliceblue;">You can buy products as per your need here....</h3></br>
         {% for product in products %}
            <div class='products'>
            <img src="{{product.image.url}}" alt='product Image' width="260" height="250"/>
