@@ -27,7 +27,8 @@ urlpatterns = [
         path('register', views.register, name='register'),
         path('term_condition', views.term_condition, name='term_condition'),
         path('about_us', views.about_us, name='about_us'),
-        path('contactUs',views.contactUs, name='contactUs'),
+        path('contact',views.contactUs, name='contactUs'),
+        path('forgot',views.forgot, name='forgot'),
         path('otp',views.otp,name='otp'),
         path('verify',views.verify_otp,name='verify_otp'),
 ]
