@@ -4,6 +4,7 @@ from home.models import Registration
 from admin_home.models import Product_Details
 from admin_home import models
 from django.http import HttpResponseRedirect
+from django.db.models import Q
 # Create your views here.
 def customer_home_index(request):
     return render(request,'customer_home/homepage.html')
@@ -51,3 +52,11 @@ def cart(request):
     c.amount = product.price
     c.save() 
     return render(request,'customer_home/addTocart.html',{'product_id': request.GET["product_id"]})
+def search(request):
+    #result={}
+    #p=Product_Details.objects.all()
+    qry = request.GET["search"]
+    p = Product_Details.objects.filter(Q(product_name__icontains=qry) | Q(description__icontains=qry) | Q(category__icontains=qry))
+    # results= Product_Details.objects.filter(lookups).distinct()
+    result={'products':p,'search':qry}
+    return render(request,'customer_home/buyProduct.html',result)

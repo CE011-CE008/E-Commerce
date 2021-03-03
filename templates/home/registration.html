@@ -1,5 +1,10 @@
 <!DOCTYPE html>
 {% load static %}
+<style>
+input:invalid {
+  border:  red;
+}
+</style>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -30,8 +35,8 @@
                                 <input type="text" name="name" id="name" placeholder="Your Name"/>
                             </div>
                             Password<div class="form-group">
-                                <label for="pass"><i class="zmdi zmdi-lock"></i></label>
-                                <input type="password" name="password" id="password" placeholder="Password"/>
+                                <label for="password"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="password" id="password" placeholder="Password" minlength=8/>
                             </div>
                             Email<div class="form-group">
                                 <label for="email"><i class="zmdi zmdi-email"></i></label>
