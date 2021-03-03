@@ -12,4 +12,9 @@ urlpatterns = [
         path('buy', views.buy, name='buy'),
         path('cart', views.cart, name='cart'),
         path('success',views.success,name='success'),
+        path('logout',views.logout,name='logout'),
+        path('search', views.search, name='search'),
+        path('showCart', views.showCart, name='showCart'),
+        path('remove_from_cart/<slug:slug>', views.remove_from_cart, name='remove_from_cart'),
+        path('read_more/<slug:slug>',views.read_more,name='read_more'),
 ]

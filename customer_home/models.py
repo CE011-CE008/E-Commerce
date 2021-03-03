@@ -4,6 +4,8 @@ from admin_home.models import Product_Details
 
 class ReceivedProduct(models.Model):
     id = models.AutoField(primary_key=True)
+    seller_name = models.CharField(max_length=100)
+    seller_email = models.CharField(max_length=25)
     product_name = models.CharField(max_length=200)
     description = models.CharField(max_length=1200)
     price = models.FloatField()
@@ -25,6 +27,5 @@ class Cart_Details(models.Model):
     cart_id = models.IntegerField()
     product_id = models.IntegerField()
     items  = models.IntegerField()
-    price = models.FloatField()
     class Meta:
         db_table='cart_details'

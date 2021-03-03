@@ -1,5 +1,11 @@
 <!DOCTYPE html>
 {% load static %}
+
+<style>
+input:invalid {
+  border:  red;
+}
+</style>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -25,13 +31,18 @@
                         <h2 class="form-title">Sign up</h2>
                         <form method="POST" action="register" >
                             {% csrf_token %}
+                            {% if message %}
+                                <div class="alert alert-{{class}}">
+                                        <script>alert("{{message}}")</script>
+                                </div>
+                            {% endif%}
                             Name<div class="form-group">
                                 <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
                                 <input type="text" name="name" id="name" placeholder="Your Name"/>
                             </div>
                             Password<div class="form-group">
-                                <label for="pass"><i class="zmdi zmdi-lock"></i></label>
-                                <input type="password" name="password" id="password" placeholder="Password"/>
+                                <label for="password"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="password" id="password" placeholder="Password" minlength=8/>
                             </div>
                             Email<div class="form-group">
                                 <label for="email"><i class="zmdi zmdi-email"></i></label>

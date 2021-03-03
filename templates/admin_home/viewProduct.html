@@ -28,7 +28,7 @@
             <th>{{p.category}}</th>
             <th>{{p.price}}</th>
             <th >{{p.product_date}}</th>
-            <th><input type=button onClick="location.href='/updateProductPage/{{p.product_id}}'" value='Update'/></th>
+            <th><input type=button onClick="location.href='/UpdateProduct/{{p.product_id}}'" value='Update'/></th>
             <th><input type=button onClick="location.href='/DeleteProduct/{{p.product_id}}'" value='Delete'/></th>
         </tr>
     {% endfor %}

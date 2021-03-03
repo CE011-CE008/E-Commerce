@@ -17,14 +17,29 @@
   <link href="{% static 'indexplugins/jquery-nice-select/css/nice-select.css' %}" rel="stylesheet">
   <!-- CUSTOM CSS -->
   <link href="{% static 'index/css/style.css' %}" rel="stylesheet">
-
-<style>
-    .f{
-        align-content: center;
-        margin-left: 650px;
-    }
-</style>
-
+  <style>
+	  body {font-family: Arial, Helvetica, sans-serif;}
+* {box-sizing: border-box;}
+	  input[type=text], select, textarea {
+        width: 100%;
+  		padding: 12px;
+  		border: 1px solid #ccc;
+  		border-radius: 4px;
+  		box-sizing: border-box;
+  		margin-top: 6px;
+  		margin-bottom: 16px;
+  		resize: vertical;
+}
+.contact{
+	border: 2px solid;
+	border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+  width: 500px;
+  margin-left: 500px;
+  margin-top: 25px;
+}
+  </style>
 </head>
 
 <body class="body-wrapper">
@@ -70,20 +85,27 @@
 	</div>
 	<!-- Container End -->
 </section>
-
-<div class="f">
-                <form>
-                    <fieldset>
-                     <legend>Send Your Response:</legend>
-                     Email:</br>
-                     <input type="text" id="email" name="email"><br><br>
-                     Comment:</br>
-                     <textarea name='comment'>Enter your Response</textarea></br>
-                     <input type="submit" value="Submit">
-                    </fieldset>
-                   </form>
-                </div>
-
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+	<form action='contactUs' class='contact' method="post">
+		{% csrf_token %}
+			<label for="name"><strong>Name</strong></label></br>
+            <input type="text" id="name" name="name" placeholder="Your name..">
+	        </br>
+            <label for="email"><strong>Email</strong></label></br>
+            <input type="text" id="email" name="email" placeholder="Enter your email..">
+		</br>
+            <label for="subject"><strong>Subject</strong></label></br>
+            <textarea id="subject" name="comment" placeholder="Write something.." style="height:200px"></textarea>
+		</br>
+           <input type="submit" value="Submit" style='margin-left: 200px'>
+	</form>
+</body>
+</html>
 
 
 

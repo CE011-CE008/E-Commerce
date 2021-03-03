@@ -34,19 +34,26 @@
               <div class="text-center mb-5">
                 <h3 class="text-uppercase">Login to <strong>Online shopping hub</strong></h3>
               </div>
+               {% if message %}
+                  <div class="alert alert-{{class}}">
+                      <script>alert("{{message}}")</script>
+                  </div>
+              {% endif%}
               <form action="auth" method="post">
+             
 			  {% csrf_token %}
                 <div class="form-group first">
-                  <label for="username">Username</label>
-                  <input type="text" class="form-control" placeholder="Enter your username" name="username" id="username">
+                  <label for="username">Email-id</label>
+                  <input type="text" class="form-control" placeholder="Enter your Email id" name="email_id" id="email_id">
                 </div>
                 <div class="form-group last mb-3">
                   <label for="password">Password</label>
                   <input type="password" class="form-control" placeholder="Your Password" name="password" id="password">
                 </div>
                  <input type="submit" value="Log In" class="btn btn-block py-2 btn-primary">
-				<div class="d-sm-flex mb-5 align-items-center">
-				Don't have Account?<a href="registration">sign up</a>
+				
+				Don't have Account?<a href="register">sign up</a></br></br></br>
+        <a href="forgot">Forgot Password?</a>
 				</div>
                
 
