@@ -118,7 +118,7 @@ def send_email(request,content):
         msg['From'] = fromEmail
         msg['To'] = toEmail
         s = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-        s.login(fromEmail, 'jaydev@7#7')
+        s.login(fromEmail, 'jaydev1@2*')
         s.send_message(msg)
         s.quit()
         return
@@ -129,7 +129,7 @@ def verify_otp(request):
     if cur_otp==request.session['otp']:
         Registration.objects.filter(email=request.session['email']).update(otp=request.session['otp'])
         customer = Registration.objects.filter(email=request.session['email'])[0]
-        c = Cart(customer_id=customer.user_id)
+        c = Cart(customer_id=customer)
         c.save()
         context={
             'message':'Sucessfull registered now you can login...'

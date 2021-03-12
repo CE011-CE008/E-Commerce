@@ -115,8 +115,8 @@ span.price {
 <div class="row">
   <div class="col-75">
     <div class="container">
-      <form action="/action_page.php">
-      
+      <form action="/place_order" method="POST">
+      {% csrf_token %}
         <div class="row">
           <div class="col-50">
             <h3>Billing Address</h3>
@@ -197,6 +197,7 @@ span.price {
       <p><a href="#">Product 4</a> <span class="price">$2</span></p>-->
       <hr>
       <p>Total <span class="price" style="color:black"><b>{{total}}</b></span></p>
+      <a href="/buy" ><font size=4>Buy More</font></a>
     </div>
   </div>
 </div>
