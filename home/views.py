@@ -111,7 +111,7 @@ def verify_otp(request):
     if cur_otp==request.session['otp']:
         Registration.objects.filter(email=request.session['email']).update(otp=request.session['otp'])
         customer = Registration.objects.filter(email=request.session['email'])[0]
-        c = Cart(customer_id=customer.user_id)
+        c = Cart(customer_id=customer)
         c.save()
         context={
             'message':'Sucessfull registered now you can login...'

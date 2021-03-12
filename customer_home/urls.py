@@ -10,10 +10,11 @@ urlpatterns = [
         path('sellProduct',views.sellProduct, name='sellproduct'),
         path('payment', views.payment, name='payment'),
         path('buy', views.buy, name='buy'),
-        path('cart', views.cart, name='cart'),
+        path('cart/<slug:slug>', views.cart, name='cart'),
         path('success',views.success,name='success'),
         path('search', views.search, name='search'),
         path('read_more/<slug:slug>',views.read_more,name='read_more'),
         path('showCart', views.showCart, name='showCart'),
         path('remove_from_cart/<slug:slug>', views.remove_from_cart, name='remove_from_cart'),
+        path('place_order',views.place_order,name="place_order"),
 ]
