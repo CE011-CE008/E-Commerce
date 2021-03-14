@@ -5,6 +5,8 @@ from admin_home.models import Product_Details
 from admin_home import models
 from django.http import HttpResponseRedirect
 from django.db.models import Q
+import smtplib
+from email.message import EmailMessage
 # Create your views here.
 def customer_home_index(request):
     return buy(request)
@@ -131,6 +133,24 @@ def place_order(request):
         odr_det.product_id=prdt
         odr_det.save()
         amount+=prdt.price*p.items
+        print(amount)
         cart_det= Cart_Details.objects.filter(product_id=p.product_id).delete()
     Order.objects.filter(user_id=request.COOKIES['user_id']).update(amount=amount)
+    odr = Order.objects.filter(user_id = request.COOKIES['user_id']).first()
+    content = 'Your order on Old-One with following details is confirmed!\n Order Status = '+odr.status+'\nTotal Amount= '+str(odr.amount)+'\nOrder Id= '+str(odr.order_id)
+    send_email(request,content)
     return render(request,'customer_home/place_order.html')
+def send_email(request,content):
+        msg = EmailMessage()
+        #content = 'Your order on Old-One with following details is confirmed!\n'
+        msg.set_content(content)
+        fromEmail = 'jaydevbambhaniya45@gmail.com'
+        toEmail = Registration.objects.filter(user_id= request.COOKIES['user_id'])[0].email
+        msg['Subject'] = 'You have successfully placed your order'
+        msg['From'] = fromEmail
+        msg['To'] = toEmail
+        s = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+        s.login(fromEmail, 'jaydev1@2*')
+        s.send_message(msg)
+        s.quit()
+        return
