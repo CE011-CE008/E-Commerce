@@ -14,7 +14,7 @@
     max-width: calc(100% - 2em);
     margin: 1em auto;
     overflow: hidden;
-    width: 1200px;
+    width: 1000px;
  }
  .header {
     background :#398B93;
@@ -34,28 +34,27 @@
     </head>
 <body>
 <div class="table-users">
-   <div class="header">Received Products</div>
+   <div class="header">Order Details</div>
    
    <table cellspacing="0" border="1" >
       <tr>
-         <th width=150>Picture</th>
-         <th width="100">Name</th>
-         <th width="400">Description</th>
-         <th width=100>Price</th>
-         <th width=250>Seller Name</th>
-         <th width=250>Seller Email</th>
-         <th colspan="2">Operations</th>
+         <th width="100">Order Id</th>
+         <th width="200">Status</th>
+         <th width=100>Amount</th>
+         <th width=250>Customer</th>
+         <th >Email</th>
+         <th>Order Date</th>
+         <th width="200">Operation</th>
       </tr>
-        {% for p in products %}
+        {% for key, value in orders.items %}
         <tr>
-            <td><img src="{{p.images.url}}" height=150 width=150></td>
-            <td width=120>{{p.product_name}}</td>
-            <td>{{p.description}}</td>
-            <td width=100>{{p.price}}</td>
-            <td width=250>{{p.seller_name}}</td>
-            <td width=250>{{p.seller_email}}</td>
-           <td><input type=button onClick="location.href='accept/{{p.id}}'" value='Accept'/></td>
-            <td><input type=button onClick="location.href='reject/{{p.id}}'" value='Reject'/></td>
+            <td width=120>{{key.order_id}}</td>
+            <td>{{key.status}}</td>
+            <td width=100>{{key.amount}}</td>
+            <td width=250>{{value.name}}</td>
+            <td width=250>{{value.email}}</td>
+            <td width=450>{{key.order_date}}</td>
+            <td><a href="/viewdetails/{{key.order_id}}">View More</a></td>
         </tr>
     {% endfor %}
     

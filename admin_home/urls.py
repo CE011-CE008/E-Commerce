@@ -28,4 +28,8 @@ urlpatterns = [
         path('signout', views.signout, name='signout'),
         path('AddAdmin', views.addAdmin, name='addAdmin'),
         path('viewReceivedProduct', views.viewReceivedProduct, name='viewReceivedProduct'),
+        path('accept/<slug:slug>', views.AcceptProduct, name="accept"),
+        path('reject/<slug:slug>', views.RejectProduct, name="reject"),
+        path('viewOrder', views.ViewOrder, name="viewOrder"),
+        path('viewdetails/<slug:slug>', views.ViewDetails, name="viewdetails")
 ]

@@ -38,6 +38,7 @@ class Order(models.Model):
     order_id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(Registration, on_delete=models.CASCADE,)
     status = models.CharField(max_length=100)
+    order_date = models.DateField()
     amount = models.IntegerField()
     class Meta:
         db_table = "orders"

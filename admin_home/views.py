@@ -15,7 +15,8 @@ from django.db import connection
 from django.http import HttpResponseRedirect
 from . import views
 from datetime import datetime
-from customer_home.models import ReceivedProduct
+from customer_home.models import ReceivedProduct, Order, Order_Details
+from home.views import send_email
 def index(request):
    userdict={}
    userdict['id']=request.COOKIES['user_id']
@@ -66,6 +67,7 @@ def viewProduct(request):
    userdict['product']=products
    return render(request,'admin_home/viewProduct.html',userdict)
 def signout(request):
+   del request.session['order_confirmation']
    response=HttpResponseRedirect('/')
    response.delete_cookie('user_id')
    return response
@@ -128,3 +130,41 @@ def addAdmin(request):
 def viewReceivedProduct(request):   
    products = ReceivedProduct.objects.all()
    return render(request,'admin_home/viewReceivedProduct.html',{'products':products})
+
+def AcceptProduct(request,slug):
+   rp=ReceivedProduct.objects.filter(id=slug).first()
+   ReceivedProduct.objects.filter(id=slug).delete()
+   cnt='Your request to sell Product With us, After viewing Product condition and price configuration we decided to buy it.You will get Your payment whenever we will recived product from you.'
+   send_email(request,'Product Confirmation',rp.seller_email,cnt)
+   pth='/viewReceivedProduct'
+   return HttpResponseRedirect(pth)
+def RejectProduct(request,slug):
+   rp=ReceivedProduct.objects.filter(id=slug).first()
+   ReceivedProduct.objects.filter(id=slug).delete()
+   cnt='We are sorry to say that we can not buy this product from you. looking forward for better Product.'
+   send_email(request,'Product Rejection',rp.seller_email,cnt)
+   pth='/viewReceivedProduct'
+   return HttpResponseRedirect(pth)
+
+def ViewOrder(request):
+   orders = Order.objects.all()
+   # for(orders as order):
+   #    order_detail = Order_Details.objects.all().filter(order_id_id = order)
+   #    for order_detail as odr_det:
+   #       product = Product_Details.objects.filter()
+   odrs = {}
+   for order in orders:
+      user = Registration.objects.filter(user_id=order.user_id.user_id).first()
+      if user not in odrs.values():
+         odrs[order] = user
+   return render(request,'admin_home/viewOrder.html',{'orders':odrs})
+
+def ViewDetails(request,slug):
+   order = Order.objects.filter(order_id=slug).first()
+   order_detail = Order_Details.objects.all().filter(order_id_id=order)
+   user = Registration.objects.filter(user_id = order.user_id.user_id).first()
+   context = {}
+   for odr in order_detail:
+      context[odr] = Product_Details.objects.filter(product_id = odr.product_id.product_id).first()
+   return render(request, 'admin_home/viewDetails.html',{'order':context,'user':user})
+

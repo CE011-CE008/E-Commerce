@@ -25,6 +25,7 @@ def auth_view(request):
     email=request.POST.get('email_id')
     password=request.POST.get('password')    
     us=Registration.objects.filter(email=email,password=password).first()
+    request.session['order_confirmation']=""
     if us is not None:
         if (us.role=="Admin" or us.role=="admin") :
             if us.otp=='none':
@@ -69,7 +70,7 @@ def register(request):
         otp=str(random.randint(99999,999999))
         request.session['otp']=otp
         request.session['email']=request.POST.get('email')
-        send_email(request,'Your Otp is: '+otp)
+        send_email(request,'Otp Verification',request.POST.get('email'),'Your Otp is:'+otp)
         saverecord.otp='none'
         saverecord.save()
         return HttpResponseRedirect('/otp')
@@ -109,12 +110,12 @@ def forgot(request):
             return render(request,'home/forgot.html',context)
     return HttpResponseRedirect('/login')
 
-def send_email(request,content):
+def send_email(request,subject,email_id,content):
         msg = EmailMessage()
         msg.set_content(content)
         fromEmail = 'jaydevbambhaniya45@gmail.com'
-        toEmail = request.POST.get('email')
-        msg['Subject'] = 'This is otp for your registration to Old-One'
+        toEmail = email_id
+        msg['Subject'] = subject
         msg['From'] = fromEmail
         msg['To'] = toEmail
         s = smtplib.SMTP_SSL('smtp.gmail.com', 465)
@@ -123,6 +124,7 @@ def send_email(request,content):
         s.quit()
         return
 def otp(request):
+    #send_email(request,'Otp Verification',request.POST.get('email'),'Your Otp is:'+otp)
     return render(request,'home/otp.html')
 def verify_otp(request):
     cur_otp=request.POST.get('otp')

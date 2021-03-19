@@ -7,9 +7,11 @@ from django.http import HttpResponseRedirect
 from django.db.models import Q
 import smtplib
 from email.message import EmailMessage
+from home.views import send_email
+from datetime import date
 # Create your views here.
 def customer_home_index(request):
-    return buy(request)
+    return HttpResponseRedirect('/buy')
 def sellProduct(request):
     return render(request,'customer_home/SellProduct.html')
 def success(request):
@@ -47,8 +49,12 @@ def payment(request):
     }
     return render(request,'customer_home/payment.html',context)
 def buy(request):
+    message=""
+    if request.session['order_confirmation'] is not None:
+        message=request.session['order_confirmation']
+        request.session['order_confirmation']=""
     products = Product_Details.objects.all()
-    return render(request,'customer_home/homepage.html', {'products': products})
+    return render(request,'customer_home/homepage.html', {'products': products,'msg':message})
 def cart(request,slug):
     customer = Registration.objects.get(user_id=request.COOKIES['user_id'])
     if customer is None:
@@ -118,6 +124,7 @@ def place_order(request):
     usr=Registration.objects.filter(user_id=request.COOKIES['user_id']).first()
     odr.user_id=usr
     odr.status='pending'
+    odr.order_date = date.today()
     odr.amount=0
     odr.save()
     odr=Order.objects.filter(user_id=request.COOKIES['user_id']).first()
@@ -133,24 +140,9 @@ def place_order(request):
         odr_det.product_id=prdt
         odr_det.save()
         amount+=prdt.price*p.items
-        print(amount)
         cart_det= Cart_Details.objects.filter(product_id=p.product_id).delete()
     Order.objects.filter(user_id=request.COOKIES['user_id']).update(amount=amount)
-    odr = Order.objects.filter(user_id = request.COOKIES['user_id']).first()
-    content = 'Your order on Old-One with following details is confirmed!\n Order Status = '+odr.status+'\nTotal Amount= '+str(odr.amount)+'\nOrder Id= '+str(odr.order_id)
-    send_email(request,content)
-    return render(request,'customer_home/place_order.html')
-def send_email(request,content):
-        msg = EmailMessage()
-        #content = 'Your order on Old-One with following details is confirmed!\n'
-        msg.set_content(content)
-        fromEmail = 'jaydevbambhaniya45@gmail.com'
-        toEmail = Registration.objects.filter(user_id= request.COOKIES['user_id'])[0].email
-        msg['Subject'] = 'You have successfully placed your order'
-        msg['From'] = fromEmail
-        msg['To'] = toEmail
-        s = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-        s.login(fromEmail, 'jaydev1@2*')
-        s.send_message(msg)
-        s.quit()
-        return
+    send_email(request,'Order Confirmation',usr.email, content = 'Your order on Old-One with following details is confirmed!\n Order Status = '+odr.status+'\nTotal Amount= '+str(amount)+'\nOrder Id= '+str(odr.order_id))
+    request.session['order_confirmation']='Your Order Placed Successfully'
+    return HttpResponseRedirect('/customer_home_index')
+

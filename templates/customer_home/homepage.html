@@ -1,5 +1,4 @@
 {% load static  %}
-
 <html lang="en">
 <head>
 
@@ -142,7 +141,9 @@
 </form>
 
 {{items}}
-
+{% if msg %}
+<script>alert('{{msg}}')</script>
+{% endif %}
         {% for product in products %}
            <div class='card'>
            <img src="{{product.image.url}}" alt='product Image' />

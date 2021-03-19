@@ -14,7 +14,7 @@
     max-width: calc(100% - 2em);
     margin: 1em auto;
     overflow: hidden;
-    width: 1200px;
+    width: 900px;
  }
  .header {
     background :#398B93;
@@ -23,6 +23,13 @@
     padding: 1rem;
     text-align: center;
     text-transform: uppercase;
+ }
+ .header1{
+    background :#398B93;
+    color: white;
+    font-size: 1.5em;
+    padding: 1rem;
+    text-align: center;
  }
             tr:hover{
                 background-color: #ddd;
@@ -34,28 +41,26 @@
     </head>
 <body>
 <div class="table-users">
-   <div class="header">Received Products</div>
-   
+   <!-- <div class="header">Order Details</div> -->
+   <div class="header">{{user.name}}'s Order On Old-One</div>
+   <div class="header1">Contact: {{user.email}}  |  {{user.phone}}</div>
    <table cellspacing="0" border="1" >
       <tr>
-         <th width=150>Picture</th>
-         <th width="100">Name</th>
-         <th width="400">Description</th>
-         <th width=100>Price</th>
-         <th width=250>Seller Name</th>
-         <th width=250>Seller Email</th>
-         <th colspan="2">Operations</th>
+         <th width="300">Product Name</th>
+         <th width="300">Items</th>
+         <th width="300">Amount</th>
+         <!-- <th width=250>Customer</th>
+         <th >Email</th>
+         <th width="200">Operation</th> -->
       </tr>
-        {% for p in products %}
+        {% for key, value in order.items %}
         <tr>
-            <td><img src="{{p.images.url}}" height=150 width=150></td>
-            <td width=120>{{p.product_name}}</td>
-            <td>{{p.description}}</td>
-            <td width=100>{{p.price}}</td>
-            <td width=250>{{p.seller_name}}</td>
-            <td width=250>{{p.seller_email}}</td>
-           <td><input type=button onClick="location.href='accept/{{p.id}}'" value='Accept'/></td>
-            <td><input type=button onClick="location.href='reject/{{p.id}}'" value='Reject'/></td>
+            <td width=120>{{value.product_name}}</td>
+            <td>{{key.items}}</td>
+            <td width=100>{{value.price}}</td>
+            <!-- <td width=250>{{value.}}</td>
+            <td width=250>{{value.email}}</td>
+            <td><a href="/viewdetails/{{key.order_id}}">View More</a></td> -->
         </tr>
     {% endfor %}
     
