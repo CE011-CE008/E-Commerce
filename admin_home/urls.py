@@ -27,6 +27,12 @@ urlpatterns = [
         path('UpdateProfile', views.updateProfile, name='updateProfile'),
         path('signout', views.signout, name='signout'),
         path('AddAdmin', views.addAdmin, name='addAdmin'),
+        path('viewReceivedProduct',views.viewReceivedProduct,name='viewReceivedProduct'),
+        path('Accept/<slug:slug>', views.AcceptProduct, name='accept'),
+        path('Reject/<slug:slug>',views.RejectProduct, name='reject'),
+        path('viewOrder', views.ViewOrder, name="viewOrder"),
+        path('viewOrderDetails/<slug:slug>', views.ViewDetails, name="viewOrderDetails"),
+        path('makedone/<slug:slug>',views.MakeDone,name="MakeDone"),
         
 ]
 

@@ -27,7 +27,9 @@
 
 
 </head>
-
+{% if feedback %}
+	<script>alert('{{feedback}}')</script>
+{%endif%}
 <body class="body-wrapper">
 
 
@@ -52,7 +54,7 @@
 								<a class="nav-link" href="/about_us">About Us</a>
 							</li>
 							<li class="nav-item active">
-								<a class="nav-link" href="/contactUs">Contact Us</a>
+								<a class="nav-link" href="/contact">Contact Us</a>
 							</li>
 						</ul>
 						<ul class="navbar-nav ml-auto mt-10">

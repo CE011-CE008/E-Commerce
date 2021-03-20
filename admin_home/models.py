@@ -8,6 +8,7 @@ class Product_Details(models.Model):
     description=models.CharField(max_length=10000)
     category=models.CharField(default="Z",max_length=50)
     product_date=models.DateField(default=datetime.date.today())
+    available=models.BooleanField(default=True)
     image=models.ImageField(upload_to='pics/')
     class Meta:
         db_table="product_details"

@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 {% load static  %}
 
 <html lang="en">
@@ -9,7 +8,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Customer home...</title>
-  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <!-- FAVICON -->
   <link rel="stylesheet" href="{% static 'index/plugins/bootstrap/css/bootstrap.min.css' %}">
   <link rel="stylesheet" href="{% static 'index/plugins/bootstrap/css/bootstrap-slider.css' %}">
@@ -24,15 +23,6 @@
   <!-- CUSTOM CSS -->
   <link href="{% static 'index/css/style.css' %}" rel="stylesheet">
   <style>
-    body {
-      image: url("{% static 'customer/images/bg2.jpg' %}");
-      background-repeat: no-repeat;
-      margin-left:auto;
-      margin-right:auto;
-      background-width:50%;
-      {% comment %} background-attachment: fixed;
-      background-size: 500; {% endcomment %}
-    }
     a{
       float: right;
       color: #f2f2f2;
@@ -43,44 +33,136 @@
       color: black
     }
     .nav{
+      margin-top:15px;
       color: black;
       float: right;
     }
     .search{
-      width: 900px;
+      width: 600px;
       height: 30px;
-      margin-top:15px;
+      margin-top:50px;
       border-style:solid;
       border-width:1px;
       border-color:#000;
       border-radius:5px;
       box-shadow:10px 10px 10px rgba(136,136,136,0.3);
     }
-    img{
-      width:50%;
-      margin-left:auto;
-      margin-right:auto;
+         body{
+             background-color:white;
+         }
+        .products{
+            display: inline-block;
+            padding-right: 50px;
+            padding-bottom: 50px;
+            
+            {% comment %} padding-top:70px; {% endcomment %}
+        }
+        .temp
+        {
+            padding-top: 50px;
+        }
+        img{
+            border-radius: 15px;
+            {% comment %} border: 2px solid; {% endcomment %}
+            width:223;
+            height:200;
+        }
+        a{
+           border: 1px;
+           text-decoration: none;
+           color: blue;
+           
+        }
+        a:hover{
+            color: white;
+            background-color: black;
+        }
+        p{
+            font-size: 18px;
+            color:black;
+        }
+        .btn {
+            background-color: grey;
+            width:10px;
 
-    }
+            border: none;
+            padding-left:13px;
+            color: white;
+            padding: auto;
+            cursor: pointer;
+        }
+  
+        .btn:hover {
+            background-color: black;
+        }
+        .card {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        max-width: 225px;
+        margin: auto;
+        margin-top:50px;
+        text-align: center;
+        font-family: verdana;
+        display:inline-block;
+}
+
+.price {
+  color: grey;
+  font-size: 22px;
+}
+
+.card button {
+  border: none;
+  outline: 0;
+  padding: 18px;
+  color: white;
+  background-color: grey;
+  text-align: center;
+  cursor: pointer;
+  width: 25%;
+  font-size: 15px;
+}
+
+.card button:hover {
+  opacity: 0.7;
+}
     </style>
 </head>
 <body >
-<h1 align="center">Welcome To Shopping Hub, how Can I help You????......!</h1><br><br>
-<form action='/search' method="get">
-  <input type='text' placeholder='Search any Product by its name or category or description....' name='search' value='{{search}}' class='search'>
-  <input type='submit' value='Search' style="height: 30px;">
-</form>
-<img src="{% static 'customer/images/bg2.jpg' %}">
 <div class="nav">
-<a class="nav-link text-white add-button" href="/buy"></i>Buy Product</a>
+
 <a class="nav-link text-white add-button" href="/sellProduct"></i>Sell Product</a>
+<a class="nav-link text-white add-button" href="/viewOrderhistory"></i>View Orders</a>
 <a class="nav-link text-white add-button" href="/UpdateProfile">Update Profile</a>
 <a class="nav-link text-white add-button" href="/signout" > Log Out</a>
+<button class="btn" onclick="location.href='/showCart'"><i class="fa fa-shopping-cart" ></i></button>
 
 </div>
-						
 
-{% block content %}
-{% endblock %}
-</body>
+<form action='/search' method="GET">
+  {% csrf_token %}
+  <input type='text'  class="search" placeholder='Search any Product by its name or category or description....' name='search' value='{{search}}'>
+  <input type='submit' value='Search'  >
+</form>
+        {% if msg1 %}
+            <script>alert('{{msg1}}')</script>
+            {% elif msg2 %}
+            <script>alert('{{msg2}}')</script>
+        {% endif %}
+        
+        
+        {% for product in products %}
+           <div class='card'>
+           <img src="{{product.image.url}}" alt='product Image' />
+           <h3>{{product.product_name}}</h3>
+           <p class="price">{{product.price}}/-<br>
+           {% if product.available %}
+                <p><font color="grey">In Stock!!</font></p>
+                <button class="card button" onclick="location.href='/cart/{{product.product_id}}'"><i class="fa fa-shopping-cart" ></i></button>
+            {%else%}
+                <p><font color="red">Not In Stock Right Now!!</font></p>
+           {%endif%}
+           <button onclick="location.href='read_more/{{product.product_id}}'" class="card button"><i style="font-size:15px" class="fa">&#xf06e;</i></button></div>
+        {% endfor %}
+      
+    </body>
 </html>

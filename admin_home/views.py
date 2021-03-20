@@ -1,7 +1,3 @@
-
-# Create your views here.
-
-#from django.shortcuts import render_to_response
 from django.views.generic import TemplateView
 from django.shortcuts import redirect
 from django.contrib import auth
@@ -18,12 +14,13 @@ from django.shortcuts import render
 from django.db import connection
 from django.http import HttpResponseRedirect
 from . import views
-from datetime import datetime
-
+from customer_home.models import Order,Order_Details
+from home.views import send_email
+import datetime
+from customer_home.models import ReceivedProduct
 def index(request):
    userdict={}
    userdict['id']=request.COOKIES['user_id']
-   print(request.COOKIES['user_id'])
    return render(request,'admin_home/homepage.html',userdict)
 def addProduct(request):
    if request.method=='GET':
@@ -34,6 +31,7 @@ def addProduct(request):
       p.price =request.POST.get('product_price')
       p.description =request.POST.get('product_description')
       p.category =request.POST.get('product_category')
+      p.product_date=datetime.date.today()
       p.image=request.FILES['image']
       p.save()
       pth='/admin_indexPage'
@@ -71,6 +69,8 @@ def viewProduct(request):
    return render(request,'admin_home/viewProduct.html',userdict)
 def signout(request):
    response=HttpResponseRedirect('/')
+   del request.session['order_confirmation']
+   del request.session['success_message']
    response.delete_cookie('user_id')
    return response
 def updateProfile(request):
@@ -112,13 +112,7 @@ def addAdmin(request):
    if request.method=='GET':
       return render(request,'admin_home/registration.html')
    if request.POST.get('name') and request.POST.get('password'):
-        # name= request.POST.get('name')
-        # User=get_user_model()
-        # password=request.POST.get('password')
-        # temp_user=User.objects.create_user(username=name,password=password)
-        # temp_user.save()
         saverecord = Registration()
-        # saverecord.user=temp_user
         saverecord.name = request.POST.get('name')
         saverecord.password = request.POST.get('password')
         saverecord.dob = request.POST.get('dob')
@@ -128,3 +122,40 @@ def addAdmin(request):
         saverecord.role="admin"
         saverecord.save()
         return render(request,'home/login.html')
+def viewReceivedProduct(request):   
+   products = ReceivedProduct.objects.all()
+   return render(request,'admin_home/viewRecievedProduct.html',{'products':products})
+def AcceptProduct(request,slug):
+   rp=ReceivedProduct.objects.filter(id=slug).first()
+   ReceivedProduct.objects.filter(id=slug).delete()
+   cnt='Your request to sell Product With us, After viewing Product condition and price configuration we decided to buy it.You will get Your payment whenever we will recived product from you.'
+   send_email(request,'Product Confirmation',rp.seller_email,cnt)
+   pth='/viewReceivedProduct'
+   return HttpResponseRedirect(pth)
+def RejectProduct(request,slug):
+   rp=ReceivedProduct.objects.filter(id=slug).first()
+   ReceivedProduct.objects.filter(id=slug).delete()
+   cnt='We are sorry to say that we can not buy this product from you. looking forward for better Product.'
+   send_email(request,'Product Rejection',rp.seller_email,cnt)
+   pth='/viewReceivedProduct'
+   return HttpResponseRedirect(pth)
+def ViewOrder(request):
+   orders = Order.objects.all()
+   odrs = {}
+   for order in orders:
+      user = Registration.objects.filter(user_id=order.user_id.user_id).first()
+      # if user not in odrs.values():
+      odrs[order] = user
+   return render(request,'admin_home/viewOrder.html',{'orders':odrs})
+
+def ViewDetails(request,slug):
+   order = Order.objects.filter(order_id=slug).first()
+   order_detail = Order_Details.objects.all().filter(order_id_id=order)
+   user = Registration.objects.filter(user_id = order.user_id.user_id).first()
+   context = {}
+   for odr in order_detail:
+      context[odr] = Product_Details.objects.filter(product_id = odr.product_id.product_id).first()
+   return render(request, 'admin_home/viewOrderDetails.html',{'order':context,'user':user,'odr':order})
+def MakeDone(request, slug):
+   order = Order.objects.filter(order_id=slug).update(status='Done')
+   return HttpResponseRedirect('/viewOrder')
