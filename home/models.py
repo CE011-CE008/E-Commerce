@@ -14,10 +14,3 @@ class Registration(models.Model):
     otp=models.CharField(max_length=6)
     class Meta:
         db_table = "account"
-class Feedback(models.Model):
-    name = models.CharField(max_length=200)
-    email = models.CharField(max_length=25)
-    comment = models.CharField(max_length=2000)
-    status = models.CharField(max_length=10)
-    class Meta:
-        db_table='feedback'

@@ -17,4 +17,6 @@ urlpatterns = [
         path('showCart', views.showCart, name='showCart'),
         path('remove_from_cart/<slug:slug>', views.remove_from_cart, name='remove_from_cart'),
         path('place_order',views.place_order,name="place_order"),
+        path('viewOrderhistory', views.ViewOrderHistory, name="viewOrderhistory"),
+        path('viewOrderDetailsHistory/<slug:slug>', views.ViewOrderHistoryDetails, name="viewOrderHistoryDetails"),
 ]

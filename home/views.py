@@ -6,7 +6,6 @@ from django.http import HttpResponse
 from django.template.context_processors import csrf
 from home.models import Registration
 from customer_home.models import Cart
-from home.models import Feedback
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render
 from django.db import connection
@@ -43,6 +42,8 @@ def auth_view(request):
     password=request.POST.get('password')    
     us=Registration.objects.filter(email=email,password=password).first()
     if us is not None:
+        request.session['order_confirmation']=""
+        request.session['success_message']=""
         if (us.role=="Admin" or us.role=="admin") :
             if us.otp=='none':
                 context={'message':'Please Verify Your mobile number first....'}
@@ -50,6 +51,7 @@ def auth_view(request):
             pth='admin_indexPage'
             response = HttpResponseRedirect(pth)
             response.set_cookie("user_id", us.user_id)
+            
             return response
         elif us.role=="customer" :
             if us.otp=='none':
@@ -83,11 +85,11 @@ def register(request):
             context={'message':'Email already registered try with different..','class':'danger'}
             return render(request,'home/registration.html',context)
         saverecord.cart_id=0
-        saverecord.role="customer"
+        saverecord.role="admin"
         otp=str(random.randint(99999,999999))
-        request.session['otp']=otp
         request.session['email']=request.POST.get('email')
-        send_email(request,'Your Otp is:'+otp)
+        request.session['otp']=otp
+        send_email(request,'Otp Verification',request.POST.get('email'),'Your Otp is:'+otp)
         saverecord.otp='none'
         saverecord.save()
         return HttpResponseRedirect('/otp')
@@ -120,12 +122,12 @@ def verify_otp(request):
     else:
         context={'message':'Invalid Otp....'}
         return render(request,'home/otp.html',context)
-def send_email(request,content):
+def send_email(request,subject,email_id,content):
         msg = EmailMessage()
         msg.set_content(content)
         fromEmail = 'bkevin6566@gmail.com'
-        toEmail = request.POST.get('email')
-        msg['Subject'] = 'otp for ecoomerce website'
+        toEmail = email_id
+        msg['Subject'] = subject
         msg['From'] = fromEmail
         msg['To'] = toEmail
         s = smtplib.SMTP_SSL('smtp.gmail.com', 465)
@@ -137,10 +139,12 @@ def contactUs(request):
     if request.method=='GET':
         return render(request,'home/contactUs.html')
     else:
-        f = Feedback()
-        f.name = request.POST.get("name")
-        f.email = request.POST.get("email")
-        f.comment = request.POST.get("comment")
-        f.status = 'unseen'
-        f.save()
-        return render(request,'home/index.html')
+        name=request.POST.get('name')
+        email=request.POST.get('email')
+        content=request.POST.get('comment')
+        admin=Registration.objects.filter(role='admin')
+        content=content+'\n Customer Name:- '+name+' and  Email_id:- '+email
+        for a in admin:
+            send_email(request,'Feedback From Customer',a.email,content)
+        
+        return render(request,'home/index.html',{'feedback':'Your Feedback Sent Successfully!!!. We will reply as quick as possible.'})

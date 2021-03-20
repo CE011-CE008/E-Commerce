@@ -156,7 +156,11 @@
            <p><font size=5 color="red"><strong>Name: </strong></font>{{product.product_name}}</p>
            <p><font size=5 color="red"><strong>Description: </strong></font>{{product.description}}</p>
            <p><font size=5 color="red"><strong>Price: </strong></font>{{product.price}}</p>
+           {%if product.available%}
            <button class="btn" onclick="location.href='/cart/{{product.product_id}}'"><i class="fa fa-shopping-cart" >Add To Cart</i></button>
+           {%else%}
+           <p><font color="red">Not In Stock Right Now!!</font></p>
+        {%endif%}
            </div>
         {% endfor %}
         </div>

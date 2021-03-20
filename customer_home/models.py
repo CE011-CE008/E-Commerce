@@ -21,12 +21,13 @@ class Cart(models.Model):
 class cart_detail(models.Model):
     cart_id=models.ForeignKey(Cart,on_delete=models.CASCADE,)
     product_id=models.ForeignKey(Product_Details,on_delete=models.CASCADE,)
-    items=models.IntegerField()
     class Meta:
         db_table="Cart_details"
 class Order(models.Model):
     order_id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(Registration, on_delete=models.CASCADE,)
+    order_date=models.DateField()
+    shipping_address=models.CharField(max_length=500)
     status = models.CharField(max_length=100)
     amount = models.IntegerField()
     class Meta:
@@ -36,6 +37,5 @@ class Order_Details(models.Model):
     id = models.AutoField(primary_key=True)
     order_id = models.ForeignKey(Order, on_delete=models.CASCADE)
     product_id = models.ForeignKey(Product_Details, on_delete=models.CASCADE)
-    items = models.IntegerField()
     class Meta:
         db_table = "order_details"
