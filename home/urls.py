@@ -30,5 +30,6 @@ urlpatterns = [
         path('contact',views.contactUs, name='contactUs'),
         path('forgot',views.forgot, name='forgot'),
         path('otp',views.otp,name='otp'),
-        path('verify',views.verify_otp,name='verify_otp'),
+        path('check_otp',views.check_otp,name='check_otp'),
+        path('verify',views.verify,name='verify'),
 ]

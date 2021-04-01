@@ -32,11 +32,11 @@
               <div class="text-center mb-5">
                 <h3 class="text-uppercase">Sell with  <strong>Best Price</strong></h3>
               </div>
-              <form action="success" method="post" enctype="multipart/form-data">
+              <form action="sellProduct" method="post" enctype="multipart/form-data">
 			  {% csrf_token %}
               <div class="form-group first">
                 <label for="product">Product</label>
-                <input type="text" class="form-control" placeholder="Enter product name" name="product" id="product">
+                <input type="text" class="form-control" placeholder="Enter product name" name="product" id="product" required>
               </div>
               <div class="form-group first">
                 <label for="description">Description</label>
@@ -44,15 +44,15 @@
               </div>
                 <div class="form-group first">
                   <label for="price">Price</label>
-                  <input type="text" class="form-control" placeholder="Enter product price" name="price" id="price">
+                  <input type="text" class="form-control" placeholder="Enter product price" name="price" id="price" required>
                 </div>
                 <div class="form-group last mb-3">
                   <label for="images">Provide Images</label>
-                  <input type="file" class="form-control" placeholder="Provide images" name="images" id="images">
+                  <input type="file" class="form-control" placeholder="Provide images" name="images" id="images" required>
                 </div>
                 
                 <input type="submit" value="Sell" class="btn btn-block py-2 btn-primary">
-                <a href="/buy" ><font size=6>Cancle</font></a>
+                <a href="/buy" ><font size=6>Cancel</font></a>
                 
                 
                 
