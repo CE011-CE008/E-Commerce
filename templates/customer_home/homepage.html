@@ -1,4 +1,5 @@
 {% load static  %}
+
 <html lang="en">
 <head>
 
@@ -83,6 +84,7 @@
         .btn {
             background-color: grey;
             width:10px;
+
             border: none;
             padding-left:13px;
             color: white;
@@ -127,7 +129,9 @@
 </head>
 <body >
 <div class="nav">
+
 <a class="nav-link text-white add-button" href="/sellProduct"></i>Sell Product</a>
+<a class="nav-link text-white add-button" href="/viewOrderhistory"></i>View Orders</a>
 <a class="nav-link text-white add-button" href="/UpdateProfile">Update Profile</a>
 <a class="nav-link text-white add-button" href="/signout" > Log Out</a>
 <button class="btn" onclick="location.href='/showCart'"><i class="fa fa-shopping-cart" ></i></button>
@@ -139,19 +143,26 @@
   <input type='text'  class="search" placeholder='Search any Product by its name or category or description....' name='search' value='{{search}}'>
   <input type='submit' value='Search'  >
 </form>
-
-{{items}}
-{% if msg %}
-<script>alert('{{msg}}')</script>
-{% endif %}
+        {% if msg1 %}
+            <script>alert('{{msg1}}')</script>
+            {% elif msg2 %}
+            <script>alert('{{msg2}}')</script>
+        {% endif %}
+        
+        
         {% for product in products %}
            <div class='card'>
            <img src="{{product.image.url}}" alt='product Image' />
            <h3>{{product.product_name}}</h3>
            <p class="price">{{product.price}}/-<br>
-           <button class="card button" onclick="location.href='/cart/{{product.product_id}}'"><i class="fa fa-shopping-cart" >{{items}}</i></button>
+           {% if product.available %}
+                <p><font color="grey">In Stock!!</font></p>
+                <button class="card button" onclick="location.href='/cart/{{product.product_id}}'"><i class="fa fa-shopping-cart" ></i></button>
+            {%else%}
+                <p><font color="red">Not In Stock Right Now!!</font></p>
+           {%endif%}
            <button onclick="location.href='read_more/{{product.product_id}}'" class="card button"><i style="font-size:15px" class="fa">&#xf06e;</i></button></div>
         {% endfor %}
       
     </body>
-</html
+</html>

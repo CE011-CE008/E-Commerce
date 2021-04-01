@@ -31,5 +31,6 @@ urlpatterns = [
         path('accept/<slug:slug>', views.AcceptProduct, name="accept"),
         path('reject/<slug:slug>', views.RejectProduct, name="reject"),
         path('viewOrder', views.ViewOrder, name="viewOrder"),
-        path('viewdetails/<slug:slug>', views.ViewDetails, name="viewdetails")
+        path('viewdetails/<slug:slug>', views.ViewDetails, name="viewdetails"),
+        path('makeDone/<slug:slug>', views.MakeDone, name="makeDone"),
 ]

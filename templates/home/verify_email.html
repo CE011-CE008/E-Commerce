@@ -1,7 +1,7 @@
 <html>
-<h1 align="center">Enter your otp here....</h1>
+<h1 align="center">Enter your Email here....</h1>
 <style>
-    .otp{
+    .email{
       width: px;
       height: 30px;
       margin-top:15px;
@@ -13,15 +13,15 @@
     }
     </style>
 <body >
-<form action='/check_otp' method="POST">
-     {% csrf_token %}
+<form action='/verify' method="POST">
+    {% csrf_token %}
     {% if message %}
         <div class="alert alert-{{class}}">
            <script>alert("{{message}}")</script>
         </div>
     {% endif%}
-  <input type='text' placeholder='Enter Your Otp...' name='otp'  class='otp'><br>
-  <input type='submit' value='Verify' class='otp'>
+  <input type='text' placeholder='Enter Your email...' name='email'  class='email'><br>
+  <input type='submit' value='submit' class='email'>
 </form>
 </body>
 </html>

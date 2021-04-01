@@ -13,48 +13,51 @@ from datetime import date
 def customer_home_index(request):
     return HttpResponseRedirect('/buy')
 def sellProduct(request):
-    return render(request,'customer_home/SellProduct.html')
-def success(request):
-    p = ReceivedProduct()
-    customer = Registration.objects.filter(user_id=request.COOKIES['user_id'])[0]
-    p.seller_name = customer.name
-    p.seller_email = customer.email
-    p.product_name = request.POST.get('product')
-    p.description = request.POST.get('description')
-    p.price = request.POST.get('price')
-    p.images = request.FILES['images']
-    p.save()
-    return render(request,'customer_home/success.html')
+    if request.method=='GET':
+        return render(request,'customer_home/SellProduct.html')
+    else:
+        p = ReceivedProduct()
+        customer = Registration.objects.filter(user_id=request.COOKIES['user_id'])[0]
+        p.seller_name = customer.name
+        p.seller_email = customer.email
+        p.product_name = request.POST.get('product')
+        p.description = request.POST.get('description')
+        p.price = request.POST.get('price')
+        p.images = request.FILES['images']
+        p.save()
+        request.session['success_message']='Thanks for selling with us.We will Inform you about your response soon.... '
+        return HttpResponseRedirect('/customer_home_index')
 def payment(request):
     cart = Cart.objects.get(customer_id=request.COOKIES['user_id'])
     cart_det= Cart_Details.objects.filter(cart_id=cart)
     if not cart_det.exists():
         return HttpResponseRedirect('customer_home_index')
     details = {}
-    itm = {}
     items=0
     total=0
     for c in cart_det:
         product = Product_Details.objects.filter(product_id=c.product_id.product_id)[0]
         details[c.product_id]=product
-        itm[c.product_id]=c.items
-        items += c.items
-        total = total + product.price*c.items
+        items += 1
+        total = total + product.price
     
     context={
         'product':details,
-        'itm': itm,
         'items':items,
         'total':total
     }
     return render(request,'customer_home/payment.html',context)
 def buy(request):
-    message=""
+    message1=""
+    message2=""
     if request.session['order_confirmation'] is not None:
-        message=request.session['order_confirmation']
+        message1=request.session['order_confirmation']
         request.session['order_confirmation']=""
+    if request.session['success_message'] is not None:
+        message2=request.session['success_message']
+        request.session['success_message']=""
     products = Product_Details.objects.all()
-    return render(request,'customer_home/homepage.html', {'products': products,'msg':message})
+    return render(request,'customer_home/homepage.html', {'products': products,'msg1':message1,'msg2':message2})
 def cart(request,slug):
     customer = Registration.objects.get(user_id=request.COOKIES['user_id'])
     if customer is None:
@@ -62,29 +65,22 @@ def cart(request,slug):
     crt = Cart.objects.get(customer_id=customer)
     crt_det=Cart_Details.objects.filter(cart_id=crt,product_id=slug).first()
     if crt_det is not None:
-        itm=crt_det.items
-        itm+=1
-        Cart_Details.objects.filter(cart_id=crt,product_id= slug).update(items=itm)
         return HttpResponseRedirect('/showCart')
     c = Cart_Details()
     c.cart_id = crt
     product = Product_Details.objects.filter(product_id=slug).first()
     c.product_id = product
-    c.items=1
     c.save()
     cart = Cart_Details.objects.filter(cart_id=crt)
     items=0
     for c in cart:
-        items+=c.items
+        items+=1
     return HttpResponseRedirect('/showCart')
 def logout(request):
     return HttpResponseRedirect('signout')
 def search(request):
-    #result={}
-    #p=Product_Details.objects.all()
     qry = request.GET["search"]
     p = Product_Details.objects.filter(Q(product_name__icontains=qry) | Q(description__icontains=qry) | Q(category__icontains=qry))
-    # results= Product_Details.objects.filter(lookups).distinct()
     result={'products':p,'search':qry}
     return render(request,'customer_home/buyProduct.html',result)
 
@@ -92,19 +88,16 @@ def showCart(request):
     cart = Cart.objects.get(customer_id=request.COOKIES['user_id'])
     cart_details = Cart_Details.objects.filter(cart_id=cart)
     details = {}
-    itm = {}
     items=0
     total=0
     for c in cart_details:
         product = Product_Details.objects.filter(product_id=c.product_id.product_id)[0]
         details[c.product_id]=product
-        itm[c.product_id]=c.items
-        items += c.items
+        items += 1
         total = total + product.price
     
     context={
         'product':details,
-        'itm': itm,
         'items':items,
         'total':total
     }
@@ -125,9 +118,10 @@ def place_order(request):
     odr.user_id=usr
     odr.status='pending'
     odr.order_date = date.today()
+    odr.shipping_address = request.POST.get('address')
     odr.amount=0
     odr.save()
-    odr=Order.objects.filter(user_id=request.COOKIES['user_id']).first()
+    odr=Order.objects.filter(user_id=request.COOKIES['user_id']).last()
     cart = Cart.objects.get(customer_id=request.COOKIES['user_id'])
     cart_det= Cart_Details.objects.filter(cart_id_id=cart).all()
     print (cart_det)
@@ -136,13 +130,24 @@ def place_order(request):
         odr_det=Order_Details()
         odr_det.order_id=odr
         prdt=Product_Details.objects.filter(product_id=p.product_id.product_id)[0]
-        odr_det.items=p.items
         odr_det.product_id=prdt
         odr_det.save()
-        amount+=prdt.price*p.items
+        amount+=prdt.price
         cart_det= Cart_Details.objects.filter(product_id=p.product_id).delete()
-    Order.objects.filter(user_id=request.COOKIES['user_id']).update(amount=amount)
+        Product_Details.objects.filter(product_id=p.product_id.product_id).update(available=False)
+    Order.objects.filter(user_id=request.COOKIES['user_id'], order_id=odr.order_id).update(amount=amount)
     send_email(request,'Order Confirmation',usr.email, content = 'Your order on Old-One with following details is confirmed!\n Order Status = '+odr.status+'\nTotal Amount= '+str(amount)+'\nOrder Id= '+str(odr.order_id))
     request.session['order_confirmation']='Your Order Placed Successfully'
     return HttpResponseRedirect('/customer_home_index')
 
+def ViewOrderHistory(request):
+    order = Order.objects.filter(user_id = request.COOKIES['user_id']).all()
+    return render(request,'customer_home/viewOrder.html',{'order':order})
+def ViewOrderDetails(request,slug):
+    order = Order.objects.filter(order_id=slug).first()
+    order_detail = Order_Details.objects.all().filter(order_id_id=order)
+    user = Registration.objects.filter(user_id = order.user_id.user_id).first()
+    context = {}
+    for odr in order_detail:
+        context[odr] = Product_Details.objects.filter(product_id = odr.product_id.product_id).first()
+    return render(request, 'customer_home/viewDetails.html',{'order':context,'user':user,'odr':order})

@@ -68,6 +68,7 @@ def viewProduct(request):
    return render(request,'admin_home/viewProduct.html',userdict)
 def signout(request):
    del request.session['order_confirmation']
+   del request.session['success_message']
    response=HttpResponseRedirect('/')
    response.delete_cookie('user_id')
    return response
@@ -110,13 +111,7 @@ def addAdmin(request):
    if request.method=='GET':
       return render(request,'admin_home/registration.html')
    if request.POST.get('name') and request.POST.get('password'):
-        # name= request.POST.get('name')
-        # User=get_user_model()
-        # password=request.POST.get('password')
-        # temp_user=User.objects.create_user(username=name,password=password)
-        # temp_user.save()
         saverecord = Registration()
-        # saverecord.user=temp_user
         saverecord.name = request.POST.get('name')
         saverecord.password = request.POST.get('password')
         saverecord.dob = request.POST.get('dob')
@@ -148,15 +143,10 @@ def RejectProduct(request,slug):
 
 def ViewOrder(request):
    orders = Order.objects.all()
-   # for(orders as order):
-   #    order_detail = Order_Details.objects.all().filter(order_id_id = order)
-   #    for order_detail as odr_det:
-   #       product = Product_Details.objects.filter()
    odrs = {}
    for order in orders:
       user = Registration.objects.filter(user_id=order.user_id.user_id).first()
-      if user not in odrs.values():
-         odrs[order] = user
+      odrs[order] = user
    return render(request,'admin_home/viewOrder.html',{'orders':odrs})
 
 def ViewDetails(request,slug):
@@ -166,5 +156,7 @@ def ViewDetails(request,slug):
    context = {}
    for odr in order_detail:
       context[odr] = Product_Details.objects.filter(product_id = odr.product_id.product_id).first()
-   return render(request, 'admin_home/viewDetails.html',{'order':context,'user':user})
-
+   return render(request, 'admin_home/viewDetails.html',{'order':context,'user':user,'odr':order})
+def MakeDone(request, slug):
+   order = Order.objects.filter(order_id=slug).update(status='Done')
+   return HttpResponseRedirect('/viewOrder')

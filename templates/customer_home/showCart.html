@@ -13,23 +13,17 @@
          <th>Picture</th>
          <th width="100">Name</th>
          <th width="390">description</th>
-         <th>Items</th>
          <th width="100">Price</th>
          <th>Remove</th>
       </tr>
-      {% for ky, val in itm.items %}
         {% for key, value in product.items %}
-        {% ifequal ky key %}
         <tr>
             <th><img src="{{value.image.url}}" height=150 width=150></th>
             <th>{{value.product_name}}</th>
             <th>{{value.description}}</th>
-            <th>{{val}}</th>
             <th>{{value.price}}</th>
             <th><input type=button onClick="location.href='/remove_from_cart/{{value.product_id}}'" value='Remove'/></th>
         </tr>
-        {% endifequal %}
-    {% endfor %}
     {% endfor %}
     
 </table>

@@ -30,32 +30,30 @@
     </head>
 <body>
 <div class="table-users">
-   <div class="header">Order Details</div>
+   <div class="header">Your Order History</div>
    
    <table cellspacing="0" border="1" >
       <tr>
          <th width="100">Order Id</th>
          <th width="200">Status</th>
          <th width=100>Amount</th>
-         <th width=250>Customer</th>
-         <th >Email</th>
          <th>Order Date</th>
+         <th width="500">Shipping Address</th>
          <th width="200">Operation</th>
       </tr>
-        {% for key, value in orders.items %}
+        {% for odr in order %}
         <tr>
-            <td width=120>{{key.order_id}}</td>
-            <td>{{key.status}}</td>
-            <td width=100>{{key.amount}}</td>
-            <td width=250>{{value.name}}</td>
-            <td width=250>{{value.email}}</td>
-            <td width=450>{{key.order_date}}</td>
-            <td><a href="/viewdetails/{{key.order_id}}">View More</a></td>
+            <td width=120>{{odr.order_id}}</td>
+            <td>{{odr.status}}</td>
+            <td width=100>{{odr.amount}}</td>
+            <td width=450>{{odr.order_date}}</td>
+            <td width=100>{{odr.shipping_address}}</td>
+            <td><a href="/viewOrderDetails/{{odr.order_id}}">View More</a></td>
         </tr>
     {% endfor %}
     
 </table>
-<p align="center"><font size=4><a href="/admin_indexPage">Home</a></p>
+<p align="center"><font size=4><a href="/customer_home_index">Home</a></p>
 </div>
 </body>
 </html>

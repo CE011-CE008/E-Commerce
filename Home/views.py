@@ -1,12 +1,11 @@
 # Create your views here.
-#from django.shortcuts import render_to_response
 from django.views.generic import TemplateView
 from django.shortcuts import redirect
 from django.contrib import auth
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse
 from django.template.context_processors import csrf
-from home.models import Registration, Feedback
+from home.models import Registration
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render
 from django.db import connection
@@ -25,11 +24,12 @@ def auth_view(request):
     email=request.POST.get('email_id')
     password=request.POST.get('password')    
     us=Registration.objects.filter(email=email,password=password).first()
-    request.session['order_confirmation']=""
     if us is not None:
+        request.session['order_confirmation']=""
+        request.session['success_message']=""
         if (us.role=="Admin" or us.role=="admin") :
             if us.otp=='none':
-                context={'message':'Please Verify Your mobile number first....'}
+                context={'message':'Please Verify Your email first....'}
                 return render(request,'home/registration.html',context)
             pth='admin_indexPage'
             response = HttpResponseRedirect(pth)
@@ -37,7 +37,7 @@ def auth_view(request):
             return response
         elif us.role=="customer" :
             if us.otp=='none':
-                context={'message':'Please Verify Your mobile number first....'}
+                context={'message':'Please Verify Your email first....'}
                 return render(request,'home/registration.html',context)
             pth='customer_home_index'
             response = HttpResponseRedirect(pth)
@@ -67,10 +67,7 @@ def register(request):
             context={'message':'Email already registered try with different..','class':'danger'}
             return render(request,'home/registration.html',context)
         saverecord.role="customer"
-        otp=str(random.randint(99999,999999))
-        request.session['otp']=otp
-        request.session['email']=request.POST.get('email')
-        send_email(request,'Otp Verification',request.POST.get('email'),'Your Otp is:'+otp)
+        verify(request)
         saverecord.otp='none'
         saverecord.save()
         return HttpResponseRedirect('/otp')
@@ -89,13 +86,15 @@ def contactUs(request):
     if request.method=='GET':
         return render(request,'home/contactUs.html')
     else:
-        f = Feedback()
-        f.name = request.POST["name"]
-        f.email = request.POST[ "email"]
-        f.comment = request.POST["comment"]
-        f.status = 'unseen'
-        f.save()
-        return render(request,'home/index.html')
+        name=request.POST.get('name')
+        email=request.POST.get('email')
+        content=request.POST.get('comment')
+        admin=Registration.objects.filter(role='admin')
+        content=content+'\n Customer Name:- '+name+' and  Email_id:- '+email
+        for a in admin:
+            send_email(request,'Feedback From Customer',a.email,content)
+        
+        return render(request,'home/index.html',{'feedback':'Your Feedback Sent Successfully!!!. We will reply as quick as possible.'})
 
 def forgot(request):
     if request.method=='GET':
@@ -126,7 +125,27 @@ def send_email(request,subject,email_id,content):
 def otp(request):
     #send_email(request,'Otp Verification',request.POST.get('email'),'Your Otp is:'+otp)
     return render(request,'home/otp.html')
-def verify_otp(request):
+def verify(request):
+    if request.method=='GET':
+        return render(request,'home/verify_email.html')
+    else:
+        usr=Registration.objects.filter(email=request.POST.get('email')).first()
+        if usr is None:
+            context={
+                'message':'Entered Email is not registered '
+            }
+            return render(request,'home/login.html',context)
+        if usr.otp!='none':
+            context={
+                'message':'Entered Email id already verified'
+            }
+            return render(request,'home/login.html',context)
+        otp=str(random.randint(99999,999999))
+        request.session['email']=request.POST.get('email')
+        request.session['otp']=otp
+        send_email(request,'Otp Verification',request.POST.get('email'),'Your Otp is:'+otp)
+        return HttpResponseRedirect('/otp')
+def check_otp(request):
     cur_otp=request.POST.get('otp')
     if cur_otp==request.session['otp']:
         Registration.objects.filter(email=request.session['email']).update(otp=request.session['otp'])
