@@ -16,22 +16,6 @@ from django.conf import settings
 import smtplib
 from email.message import EmailMessage
 
-
-def forgot(request):
-    if request.method=='GET':
-        return render(request,'home/forgot.html')
-    else:
-        us=Registration.objects.filter(email=request.POST.get("email"))
-        if us is not None:
-            cont='Your Password is:'+Registration.objects.filter(email=request.POST.get("email"))[0].password+'\n if you are not requested for forgot password kindly ignore this.'
-            send_email(request,cont)
-        else:
-            context={'message':'Please Provide registered email ...'}
-            return render(request,'home/forgot.html',context)
-    return HttpResponseRedirect('/login')
-
-
-
 def index(request):
     return render(request,'home/index.html')
 
@@ -46,7 +30,7 @@ def auth_view(request):
         request.session['success_message']=""
         if (us.role=="Admin" or us.role=="admin") :
             if us.otp=='none':
-                context={'message':'Please Verify Your mobile number first....'}
+                context={'message':'Please Verify Your email-id first....'}
                 return render(request,'home/registration.html',context)
             pth='admin_indexPage'
             response = HttpResponseRedirect(pth)
@@ -55,7 +39,7 @@ def auth_view(request):
             return response
         elif us.role=="customer" :
             if us.otp=='none':
-                context={'message':'Please Verify Your mobile number first....'}
+                context={'message':'Please Verify Your email-id first....'}
                 return render(request,'home/registration.html',context)
             pth='customer_home_index'
             response = HttpResponseRedirect(pth)
@@ -85,30 +69,34 @@ def register(request):
             context={'message':'Email already registered try with different..','class':'danger'}
             return render(request,'home/registration.html',context)
         saverecord.cart_id=0
-        saverecord.role="admin"
+        saverecord.role="customer"
+        saverecord.otp='none'
+        saverecord.save()
+        verify(request)
+        return HttpResponseRedirect('/otp')
+    return render(request,'home/registration.html')
+def verify(request):
+    if request.method=='GET':
+        return render(request,'home/verify_email.html')
+    else:
+        usr=Registration.objects.filter(email=request.POST.get('email')).first()
+        if usr is None:
+            context={
+                'message':'Entered Email is not registered '
+            }
+            return render(request,'home/login.html',context)
+        if usr.otp!='none':
+            context={
+                'message':'Entered Email id already verified'
+            }
+            return render(request,'home/login.html',context)
         otp=str(random.randint(99999,999999))
         request.session['email']=request.POST.get('email')
         request.session['otp']=otp
         send_email(request,'Otp Verification',request.POST.get('email'),'Your Otp is:'+otp)
-        saverecord.otp='none'
-        saverecord.save()
         return HttpResponseRedirect('/otp')
-    return render(request,'home/registration.html')
-def otp(request):
-    return render(request,'home/otp.html')
-def loggedin(request):
-    return render(request,'home/loggedin.html', {"full_name":request.user.username})
-def invalidlogin(request):
-    return render(request,'home/invalidlogin.html')
-def logout(request):
-    return render(request,'home/index.html')
-def term_condition(request):
-    return render(request,'home/term_condition.html')
-def about_us(request):
-    return render(request,'home/about_us.html')
-def contactUs(request):
-    return render(request,'home/contactUs.html')
-def verify_otp(request):
+
+def check_otp(request):
     cur_otp=request.POST.get('otp')
     if cur_otp==request.session['otp']:
         Registration.objects.filter(email=request.session['email']).update(otp=request.session['otp'])
@@ -146,5 +134,30 @@ def contactUs(request):
         content=content+'\n Customer Name:- '+name+' and  Email_id:- '+email
         for a in admin:
             send_email(request,'Feedback From Customer',a.email,content)
-        
         return render(request,'home/index.html',{'feedback':'Your Feedback Sent Successfully!!!. We will reply as quick as possible.'})
+def forgot(request):
+    if request.method=='GET':
+        return render(request,'home/forgot.html')
+    else:
+        us=Registration.objects.filter(email=request.POST.get("email"))
+        if us is not None:
+            cont='Your Password is:'+Registration.objects.filter(email=request.POST.get("email"))[0].password+'\n if you are not requested for forgot password kindly ignore this.'
+            send_email(request,'Reset Password',request.POST.get("email"),cont)
+        else:
+            context={'message':'Please Provide registered email ...'}
+            return render(request,'home/forgot.html',context)
+    return HttpResponseRedirect('/login')
+def otp(request):
+    return render(request,'home/otp.html')
+def loggedin(request):
+    return render(request,'home/loggedin.html', {"full_name":request.user.username})
+def invalidlogin(request):
+    return render(request,'home/invalidlogin.html')
+def logout(request):
+    return render(request,'home/index.html')
+def term_condition(request):
+    return render(request,'home/term_condition.html')
+def about_us(request):
+    return render(request,'home/about_us.html')
+def contactUs(request):
+    return render(request,'home/contactUs.html')

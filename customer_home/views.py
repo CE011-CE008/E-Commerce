@@ -12,19 +12,20 @@ import datetime
 def customer_home_index(request):
     return HttpResponseRedirect('/buy')
 def sellProduct(request):
-    return render(request,'customer_home/SellProduct.html')
-def success(request):
-    p = ReceivedProduct()
-    customer = Registration.objects.filter(user_id=request.COOKIES['user_id'])[0]
-    p.seller_name = customer.name
-    p.seller_email = customer.email
-    p.product_name = request.POST.get('product')
-    p.description = request.POST.get('description')
-    p.price = request.POST.get('price')
-    p.images = request.FILES['images']
-    p.save()
-    request.session['success_message']='Thanks for selling with us.We will Inform you about your response soon.... '
-    return HttpResponseRedirect('/customer_home_index')
+    if request.method=='GET':
+        return render(request,'customer_home/SellProduct.html')
+    else:
+        p = ReceivedProduct()
+        customer = Registration.objects.filter(user_id=request.COOKIES['user_id'])[0]
+        p.seller_name = customer.name
+        p.seller_email = customer.email
+        p.product_name = request.POST.get('product')
+        p.description = request.POST.get('description')
+        p.price = request.POST.get('price')
+        p.images = request.FILES['images']
+        p.save()
+        request.session['success_message']='Thanks for selling with us.We will Inform you about your response soon.... '
+        return HttpResponseRedirect('/customer_home_index')
 def payment(request):
     cart = Cart.objects.get(customer_id=request.COOKIES['user_id'])
     cart_det= cart_detail.objects.filter(cart_id_id=cart)

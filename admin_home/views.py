@@ -144,7 +144,6 @@ def ViewOrder(request):
    odrs = {}
    for order in orders:
       user = Registration.objects.filter(user_id=order.user_id.user_id).first()
-      # if user not in odrs.values():
       odrs[order] = user
    return render(request,'admin_home/viewOrder.html',{'orders':odrs})
 
